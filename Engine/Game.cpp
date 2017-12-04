@@ -25,7 +25,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	p( Vec2( Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 ),rng )
+	p( Vec2( Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 ) )
 {
 }
 

@@ -6,8 +6,9 @@
 class Player
 {
 public:
+	Player();
 	Player( class Random& rng );
-	Player( const Vec2& pos,class Random& rng );
+	Player( const Vec2& pos );
 	void Update( class Keyboard& kbd,float dt );
 	void Draw( class Graphics& gfx ) const;
 private:

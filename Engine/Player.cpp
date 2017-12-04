@@ -4,20 +4,26 @@
 #include <cassert>
 #include "Random.h"
 
-Player::Player( Random& rng )
+Player::Player()
 	:
 	size( 50.0f,50.0f ),
 	pos( 0.0f,0.0f ),
 	hitbox( pos,size.x,size.y ),
 	scrRect( 0.0f,float( Graphics::ScreenWidth ),0.0f,float( Graphics::ScreenHeight ) )
 {
+}
+
+Player::Player( Random& rng )
+	:
+	Player()
+{
 	pos.x = float( rng.NextInt( int( size.x / 2.0f ),Graphics::ScreenWidth - int( size.x / 2.0f ) ) );
 	pos.y = float( rng.NextInt( int( size.y / 2.0f ),Graphics::ScreenHeight - int( size.y / 2.0f ) ) );
 }
 
-Player::Player( const Vec2& pos_in,Random& rng )
+Player::Player( const Vec2& pos_in )
 	:
-	Player( rng )
+	Player()
 {
 	pos = pos_in - size;
 }
