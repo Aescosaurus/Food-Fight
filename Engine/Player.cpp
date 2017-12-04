@@ -2,8 +2,9 @@
 #include "Keyboard.h"
 #include "Graphics.h"
 #include <cassert>
+#include "Random.h"
 
-Player::Player()
+Player::Player( Random& rng )
 	:
 	size( 50.0f,50.0f ),
 	pos( 0.0f,0.0f ),
@@ -14,9 +15,9 @@ Player::Player()
 	pos.y = float( rng.NextInt( int( size.y / 2.0f ),Graphics::ScreenHeight - int( size.y / 2.0f ) ) );
 }
 
-Player::Player( const Vec2& pos_in )
+Player::Player( const Vec2& pos_in,Random& rng )
 	:
-	Player()
+	Player( rng )
 {
 	pos = pos_in - size;
 }

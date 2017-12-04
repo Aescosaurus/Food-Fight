@@ -2,13 +2,12 @@
 
 #include "Vec2.h"
 #include "Rect.h"
-#include "Random.h"
 
 class Player
 {
 public:
-	Player();
-	Player( const Vec2& pos );
+	Player( class Random& rng );
+	Player( const Vec2& pos,class Random& rng );
 	void Update( class Keyboard& kbd,float dt );
 	void Draw( class Graphics& gfx ) const;
 private:
@@ -16,6 +15,5 @@ private:
 	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
-	Random rng;
 	const Rect scrRect;
 };
