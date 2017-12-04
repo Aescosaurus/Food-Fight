@@ -42,9 +42,19 @@ void Game::UpdateModel()
 	const float dt = ft.Mark();
 
 	p.Update( wnd.kbd,dt );
+
+	if( rng.NextInt( 0,99 ) > 98 )
+	{
+		enemies.emplace_back( Enemy( rng ) );
+	}
 }
 
 void Game::ComposeFrame()
 {
+	for( const Enemy& e : enemies )
+	{
+		e.Draw( gfx );
+	}
+
 	p.Draw( gfx );
 }

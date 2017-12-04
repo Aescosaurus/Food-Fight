@@ -25,6 +25,9 @@
 #include "Graphics.h"
 #include "Player.h"
 #include "TimeStep.h"
+#include "Random.h"
+#include "Enemy.h"
+#include <vector>
 
 class Game
 {
@@ -45,6 +48,8 @@ private:
 	/********************************/
 	/*  User Variables              */
 	TimeStep ft;
+	Random rng;
 	Player p;
+	std::vector<Enemy> enemies;
 	/********************************/
 };
