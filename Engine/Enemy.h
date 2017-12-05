@@ -16,7 +16,11 @@ private:
 public:
 	Enemy( class Random& rng,const std::vector<Enemy>& others );
 	void Update( const class Player& p,const std::vector<Enemy>& others,float dt );
+	void Update( float dt );
 	void Draw( class Graphics& gfx ) const;
+
+	void SetTarget( const Vec2& target );
+	void SetAvoidTarget( const Vec2& antiTarget );
 
 	const Rect& GetRect() const;
 	const Vec2& GetPos() const;

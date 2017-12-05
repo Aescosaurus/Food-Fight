@@ -54,9 +54,28 @@ void Enemy::Update( const Player& p,const std::vector<Enemy>& others,float dt )
 	hitbox.MoveTo( pos );
 }
 
+void Enemy::Update( float dt )
+{
+	pos += vel * speed * dt;
+
+	hitbox.MoveTo( pos );
+}
+
 void Enemy::Draw( Graphics& gfx ) const
 {
 	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Magenta );
+}
+
+void Enemy::SetTarget( const Vec2& target )
+{
+	vel = Vec2( 0.0f,0.0f ) - ( pos - target );
+	vel.Normalize();
+}
+
+void Enemy::SetAvoidTarget( const Vec2& antiTarget )
+{
+	vel = Vec2( 0.0f,0.0f ) + ( pos - antiTarget );
+	vel.Normalize();
 }
 
 const Rect& Enemy::GetRect() const

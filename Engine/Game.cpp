@@ -43,14 +43,28 @@ void Game::UpdateModel()
 
 	p.Update( wnd.kbd,dt );
 
-	for( Enemy& e : enemies )
 	{
-		e.Update( p,enemies,dt );
-	}
+		for( Enemy& e : enemies )
+		{
+			const Vec2 target = p.GetPos();
+			e.SetTarget( target );
 
-	if( rng.NextInt( 0,99 ) > 98 )
-	{
-		enemies.emplace_back( Enemy( rng,enemies ) );
+			for( Enemy& e2 : enemies )
+			{
+				if( e.GetRect().IsOverlappingWith( e2.GetRect() ) && ( &e != &e2 ) )
+				{
+					e.SetAvoidTarget( e2.GetPos() );
+					break;
+				}
+			}
+
+			e.Update( dt );
+		}
+
+		if( rng.NextInt( 0,99 ) > 98 )
+		{
+			enemies.emplace_back( Enemy( rng,enemies ) );
+		}
 	}
 }
 
