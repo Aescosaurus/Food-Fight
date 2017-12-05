@@ -2,65 +2,30 @@
 #include "Random.h"
 #include "Graphics.h"
 #include "Player.h"
+#include <cassert>
 
-Enemy::Enemy( Random& rng,const std::vector<Enemy>& others )
+Enemy::Enemy()
 	:
 	size( 55.0f,55.0f ),
-	hitbox( pos,pos + size )
+	hitbox( pos,pos + size ),
+	pos( 0.0f,0.0f ),
+	vel( 0.0f,0.0f )
 {
-	bool isTouching = false;
-	do
-	{
-		pos.x = float( rng.NextInt( int( size.x ),Graphics::ScreenWidth - int( size.x ) ) );
-		pos.y = float( rng.NextInt( int( size.y ),Graphics::ScreenHeight - int( size.y ) ) );
-		hitbox.MoveTo( pos );
-
-		for( const Enemy& e : others )
-		{
-			if( e.GetRect().IsOverlappingWith( hitbox ) )
-			{
-				isTouching = true;
-			}
-		}
-	} while( isTouching );
 }
 
 Enemy::Enemy( Random& rng )
 	:
-	size( 55.0f,55.0f ),
-	hitbox( pos,pos + size )
+	Enemy()
 {
 	pos.x = float( rng.NextInt( int( size.x ),Graphics::ScreenWidth - int( size.x ) ) );
 	pos.y = float( rng.NextInt( int( size.y ),Graphics::ScreenHeight - int( size.y ) ) );
 }
 
-void Enemy::Update( const Player& p,const std::vector<Enemy>& others,float dt )
+Enemy::Enemy( const Vec2& pos )
+	:
+	Enemy()
 {
-	Vec2 posToAvoid;
-	MoveState nextState = MoveState::Moving;
-	for( const Enemy& e : others )
-	{
-		if( e.GetRect().IsOverlappingWith( hitbox ) && &e != &( *this ) )
-		{
-			nextState = MoveState::Avoiding;
-			posToAvoid = e.GetPos();
-			break;
-		}
-	}
-	state = nextState;
-
-	if( state == MoveState::Moving )
-	{
-		const Vec2 diff = pos - p.GetPos();
-		pos -= diff.GetNormalized() * speed * dt;
-	}
-	else if( state == MoveState::Avoiding )
-	{
-		const Vec2 diff = pos - posToAvoid;
-		pos += diff.GetNormalized() * speed * dt;
-	}
-
-	hitbox.MoveTo( pos );
+	this->pos = pos;
 }
 
 void Enemy::Update( float dt )
@@ -70,8 +35,9 @@ void Enemy::Update( float dt )
 	hitbox.MoveTo( pos );
 }
 
-void Enemy::Draw( Graphics& gfx ) const
+void Enemy::Draw( Graphics& gfx,const Rect& scrRect ) const
 {
+	assert( hitbox.IsContainedBy( scrRect ) );
 	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Magenta );
 }
 

@@ -6,19 +6,12 @@
 
 class Enemy
 {
-private:
-	enum class MoveState
-	{
-		Moving,
-		Avoiding,
-		Idle
-	};
 public:
-	Enemy( class Random& rng,const std::vector<Enemy>& others );
+	Enemy();
 	Enemy( class Random& rng );
-	void Update( const class Player& p,const std::vector<Enemy>& others,float dt );
+	Enemy( const Vec2& pos );
 	void Update( float dt );
-	void Draw( class Graphics& gfx ) const;
+	void Draw( class Graphics& gfx,const Rect& scrRect ) const;
 
 	void SetTarget( const Vec2& target );
 	void SetAvoidTarget( const Vec2& antiTarget );
@@ -27,9 +20,8 @@ public:
 	const Vec2& GetPos() const;
 private:
 	static constexpr float speed = 100.0f;
-	const Vec2 size = { 0.0f,0.0f };
-	Vec2 pos = { 0.0f,0.0f };
-	Rect hitbox = { 0.0f,0.0f,0.0f,0.0f };
-	Vec2 vel = { 0.0f,0.0f };
-	MoveState state = MoveState::Idle;
+	const Vec2 size;
+	Vec2 pos;
+	Rect hitbox;
+	Vec2 vel;
 };

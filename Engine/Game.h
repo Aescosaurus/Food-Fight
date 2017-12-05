@@ -51,5 +51,6 @@ private:
 	Random rng;
 	Player p;
 	std::vector<Enemy> enemies;
+	const Rect scrRect = { 0.0f,float( Graphics::ScreenWidth ),0.0f,float( Graphics::ScreenHeight ) };
 	/********************************/
 };

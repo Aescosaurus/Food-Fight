@@ -8,8 +8,7 @@ Player::Player()
 	:
 	size( 50.0f,50.0f ),
 	pos( 0.0f,0.0f ),
-	hitbox( pos,size.x,size.y ),
-	scrRect( 0.0f,float( Graphics::ScreenWidth ),0.0f,float( Graphics::ScreenHeight ) )
+	hitbox( pos,pos + size )
 {
 }
 
@@ -30,30 +29,30 @@ Player::Player( const Vec2& pos_in )
 
 void Player::Update( Keyboard& kbd,float dt )
 {
+	const float moveTurn = moveSpeed * dt;
 	Vec2 moveAmount = Vec2( 0.0f,0.0f );
-	if( kbd.KeyIsPressed( int( 'W' ) ) && pos.y - moveSpeed > 0.0f )
+	if( kbd.KeyIsPressed( int( 'W' ) ) && hitbox.top - moveTurn > 0.0f )
 	{
 		--moveAmount.y;
 	}
-	if( kbd.KeyIsPressed( int( 'S' ) ) && int( pos.y + size.y + moveSpeed ) < Graphics::ScreenHeight )
+	if( kbd.KeyIsPressed( int( 'S' ) ) && hitbox.bottom + moveTurn < float( Graphics::ScreenHeight ) )
 	{
 		++moveAmount.y;
 	}
-	if( kbd.KeyIsPressed( int( 'A' ) ) && pos.x - moveSpeed > 0.0f )
+	if( kbd.KeyIsPressed( int( 'A' ) ) && hitbox.left - moveTurn > 0.0f )
 	{
 		--moveAmount.x;
 	}
-	if( kbd.KeyIsPressed( int( 'D' ) ) && int( pos.x + size.x + moveSpeed ) < Graphics::ScreenWidth )
+	if( kbd.KeyIsPressed( int( 'D' ) ) && hitbox.right + moveTurn < float( Graphics::ScreenWidth ) )
 	{
 		++moveAmount.x;
 	}
-	moveAmount.Normalize();
-	pos += moveAmount * moveSpeed;
-
+	pos += moveAmount.GetNormalized() * moveTurn;
+	
 	hitbox.MoveTo( pos );
 }
 
-void Player::Draw( Graphics& gfx ) const
+void Player::Draw( Graphics& gfx,const Rect& scrRect ) const
 {
 	assert( hitbox.IsContainedBy( scrRect ) );
 	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
