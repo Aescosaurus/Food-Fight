@@ -11,6 +11,8 @@ public:
 	Player( const Vec2& pos );
 	void Update( class Keyboard& kbd,float dt );
 	void Draw( class Graphics& gfx ) const;
+
+	const Vec2& GetPos() const;
 private:
 	static constexpr float moveSpeed = 3.5f;
 	const Vec2 size;

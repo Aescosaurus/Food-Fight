@@ -58,3 +58,8 @@ void Player::Draw( Graphics& gfx ) const
 	assert( hitbox.IsContainedBy( scrRect ) );
 	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
 }
+
+const Vec2& Player::GetPos() const
+{
+	return pos;
+}
