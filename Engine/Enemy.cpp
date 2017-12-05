@@ -25,6 +25,15 @@ Enemy::Enemy( Random& rng,const std::vector<Enemy>& others )
 	} while( isTouching );
 }
 
+Enemy::Enemy( Random& rng )
+	:
+	size( 55.0f,55.0f ),
+	hitbox( pos,pos + size )
+{
+	pos.x = float( rng.NextInt( int( size.x ),Graphics::ScreenWidth - int( size.x ) ) );
+	pos.y = float( rng.NextInt( int( size.y ),Graphics::ScreenHeight - int( size.y ) ) );
+}
+
 void Enemy::Update( const Player& p,const std::vector<Enemy>& others,float dt )
 {
 	Vec2 posToAvoid;
@@ -68,13 +77,13 @@ void Enemy::Draw( Graphics& gfx ) const
 
 void Enemy::SetTarget( const Vec2& target )
 {
-	vel = Vec2( 0.0f,0.0f ) - ( pos - target );
+	vel = -( pos - target );
 	vel.Normalize();
 }
 
 void Enemy::SetAvoidTarget( const Vec2& antiTarget )
 {
-	vel = Vec2( 0.0f,0.0f ) + ( pos - antiTarget );
+	vel = pos - antiTarget;
 	vel.Normalize();
 }
 

@@ -15,6 +15,7 @@ private:
 	};
 public:
 	Enemy( class Random& rng,const std::vector<Enemy>& others );
+	Enemy( class Random& rng );
 	void Update( const class Player& p,const std::vector<Enemy>& others,float dt );
 	void Update( float dt );
 	void Draw( class Graphics& gfx ) const;

@@ -48,6 +48,13 @@ bool Vec2::operator!=( const Vec2& rhs ) const
 	return !( *this == rhs );
 }
 
+Vec2& Vec2::operator-()
+{
+	x = -x;
+	y = -y;
+	return *this;
+}
+
 float Vec2::GetLength() const
 {
 	return std::sqrt( GetLengthSq() );

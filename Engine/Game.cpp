@@ -63,7 +63,7 @@ void Game::UpdateModel()
 
 		if( rng.NextInt( 0,99 ) > 98 )
 		{
-			enemies.emplace_back( Enemy( rng,enemies ) );
+			enemies.emplace_back( Enemy( rng ) );
 		}
 	}
 }
