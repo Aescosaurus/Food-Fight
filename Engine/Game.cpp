@@ -51,7 +51,7 @@ void Game::UpdateModel()
 
 			for( Enemy& e2 : enemies )
 			{
-				if( e.GetRect().IsOverlappingWith( e2.GetRect() ) && ( &e != &e2 ) )
+				if( e.GetRect().IsOverlappingWith( e2.GetRect().GetExpanded( 5.0f ) ) && ( &e != &e2 ) )
 				{
 					e.SetAvoidTarget( e2.GetPos() );
 					break;
