@@ -21,11 +21,13 @@ public:
 		const Vec2& GetPos() const;
 		const Rect& GetRect() const;
 	private:
-		static constexpr float speed = 50.0f;
+		static constexpr float speed = 250.0f;
 		const Vec2 size;
 		Vec2 pos;
 		Vec2 vel;
 		Rect hitbox;
+		Vec2 target;
+		bool canRetarget = true;
 	};
 public:
 private:

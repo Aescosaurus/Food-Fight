@@ -18,6 +18,7 @@ public:
 
 	float GetLength() const;
 	float GetLengthSq() const;
+	static float FindDistSq( const Vec2& vec1,const Vec2& vec2 );
 
 	Vec2& Normalize();
 	Vec2 GetNormalized() const;

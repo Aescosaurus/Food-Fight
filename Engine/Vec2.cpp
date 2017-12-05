@@ -65,6 +65,12 @@ float Vec2::GetLengthSq() const
 	return x * x + y * y;
 }
 
+float Vec2::FindDistSq( const Vec2& vec1,const Vec2& vec2 )
+{
+	const Vec2 delta = vec1 - vec2;
+	return( delta.x * delta.x + delta.y * delta.y );
+}
+
 Vec2& Vec2::Normalize()
 {
 	return *this = GetNormalized();

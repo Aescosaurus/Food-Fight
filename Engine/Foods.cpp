@@ -28,7 +28,15 @@ Foods::Cabbage::Cabbage( Random& rng )
 
 void Foods::Cabbage::Update( float dt )
 {
-	// pos += vel.GetNormalized() * speed * dt;
+	if( Vec2::FindDistSq( pos,target ) < size.x )
+	{
+		canRetarget = true;
+	}
+	else
+	{
+		pos += vel.GetNormalized() * speed * dt;
+		canRetarget = false;
+	}
 
 	hitbox.MoveTo( pos );
 }
@@ -40,7 +48,11 @@ void Foods::Cabbage::Draw( Graphics& gfx ) const
 
 void Foods::Cabbage::SetDir( const Vec2& target )
 {
-	vel = -( target - pos );
+	if( canRetarget )
+	{
+		this->target = target;
+		vel = target - pos;
+	}
 }
 
 const Vec2& Foods::Cabbage::GetPos() const

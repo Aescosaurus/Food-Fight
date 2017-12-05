@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
 	p( Vec2( Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 ) )
 {
-	cabbages.emplace_back( Foods::Cabbage( Vec2( 300.0f,300.0f ) ) );
+	cabbages.emplace_back( Foods::Cabbage( Vec2( 50.0f,50.0f ) ) );
 }
 
 void Game::Go()
