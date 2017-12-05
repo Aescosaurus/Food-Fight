@@ -28,6 +28,7 @@
 #include "Random.h"
 #include "Enemy.h"
 #include <vector>
+#include "Foods.h"
 
 class Game
 {
@@ -50,7 +51,8 @@ private:
 	TimeStep ft;
 	Random rng;
 	Player p;
-	std::vector<Enemy> enemies;
+	// std::vector<Enemy> enemies;
+	std::vector<Foods::Cabbage> cabbages;
 	const Rect scrRect = { 0.0f,float( Graphics::ScreenWidth ),0.0f,float( Graphics::ScreenHeight ) };
 	/********************************/
 };

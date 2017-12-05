@@ -27,6 +27,7 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
 	p( Vec2( Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 ) )
 {
+	cabbages.emplace_back( Foods::Cabbage( Vec2( 300.0f,300.0f ) ) );
 }
 
 void Game::Go()
@@ -43,33 +44,44 @@ void Game::UpdateModel()
 
 	p.Update( wnd.kbd,dt );
 
-	for( Enemy& e : enemies )
-	{
-		const Vec2 target = p.GetPos();
-		e.SetTarget( target );
+	// for( Enemy& e : enemies )
+	// {
+	// 	const Vec2 target = p.GetPos();
+	// 	e.SetTarget( target );
+	// 
+	// 	for( Enemy& e2 : enemies )
+	// 	{
+	// 		if( e.GetRect().IsOverlappingWith( e2.GetRect().GetExpanded( 5.0f ) ) && ( &e != &e2 ) )
+	// 		{
+	// 			e.SetAvoidTarget( e2.GetPos() );
+	// 			break;
+	// 		}
+	// 	}
+	// 
+	// 	e.Update( dt );
+	// }
+	// if( rng.NextInt( 0,99 ) > 98 )
+	// {
+	// 	enemies.emplace_back( Enemy( rng ) );
+	// }
 
-		for( Enemy& e2 : enemies )
-		{
-			if( e.GetRect().IsOverlappingWith( e2.GetRect().GetExpanded( 5.0f ) ) && ( &e != &e2 ) )
-			{
-				e.SetAvoidTarget( e2.GetPos() );
-				break;
-			}
-		}
-
-		e.Update( dt );
-	}
-	if( rng.NextInt( 0,99 ) > 98 )
+	for( Foods::Cabbage& c : cabbages )
 	{
-		enemies.emplace_back( Enemy( rng ) );
+		c.SetDir( p.GetPos() );
+	
+		c.Update( dt );
 	}
 }
 
 void Game::ComposeFrame()
 {
-	for( const Enemy& e : enemies )
+	// for( const Enemy& e : enemies )
+	// {
+	// 	e.Draw( gfx,scrRect );
+	// }
+	for( const Foods::Cabbage& c : cabbages )
 	{
-		e.Draw( gfx,scrRect );
+		c.Draw( gfx );
 	}
 
 	p.Draw( gfx,scrRect );
