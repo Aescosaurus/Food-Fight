@@ -19,11 +19,12 @@ public:
 	void Draw( class Graphics& gfx ) const;
 
 	const Rect& GetRect() const;
+	const Vec2& GetPos() const;
 private:
-	static constexpr float speed = 2.5f;
-	const Vec2 size;
-	Vec2 pos;
-	Rect hitbox;
-	Vec2 vel;
+	static constexpr float speed = 100.0f;
+	const Vec2 size = { 0.0f,0.0f };
+	Vec2 pos = { 0.0f,0.0f };
+	Rect hitbox = { 0.0f,0.0f,0.0f,0.0f };
+	Vec2 vel = { 0.0f,0.0f };
 	MoveState state = MoveState::Idle;
 };
