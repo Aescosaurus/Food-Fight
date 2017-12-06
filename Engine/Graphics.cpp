@@ -183,11 +183,11 @@ Graphics::Graphics( HWNDKey& key )
 	const FSQVertex vertices[] =
 	{
 		{ -1.0f,1.0f,0.5f,0.0f,0.0f },
-		{ 1.0f,1.0f,0.5f,1.0f,0.0f },
-		{ 1.0f,-1.0f,0.5f,1.0f,1.0f },
-		{ -1.0f,1.0f,0.5f,0.0f,0.0f },
-		{ 1.0f,-1.0f,0.5f,1.0f,1.0f },
-		{ -1.0f,-1.0f,0.5f,0.0f,1.0f },
+	{ 1.0f,1.0f,0.5f,1.0f,0.0f },
+	{ 1.0f,-1.0f,0.5f,1.0f,1.0f },
+	{ -1.0f,1.0f,0.5f,0.0f,0.0f },
+	{ 1.0f,-1.0f,0.5f,1.0f,1.0f },
+	{ -1.0f,-1.0f,0.5f,0.0f,1.0f },
 	};
 	D3D11_BUFFER_DESC bd = {};
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -207,7 +207,7 @@ Graphics::Graphics( HWNDKey& key )
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 		{ "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		{ "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 }
+	{ "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 }
 	};
 
 	// Ignore the intellisense error "namespace has no member"
@@ -250,6 +250,11 @@ Graphics::~Graphics()
 	}
 	// clear the state of the device context before destruction
 	if( pImmediateContext ) pImmediateContext->ClearState();
+}
+
+Rect Graphics::GetScreenRect()
+{
+	return{ 0.0f,float( ScreenWidth ),0.0f,float( ScreenHeight ) };
 }
 
 void Graphics::EndFrame()
@@ -419,7 +424,7 @@ void Graphics::DrawLine( int x0,int y0,int x1,int y1,Color c )
 	}
 	float intery = yend + gradient; // first y-intersection for the main loop
 
-	// handle second endpoint
+									// handle second endpoint
 	xend = float( round( x1 ) );
 	yend = y1 + gradient * ( xend - x1 );
 	xgap = x1 + 0.5f - floor( x1 + 0.5f );
@@ -440,7 +445,7 @@ void Graphics::DrawLine( int x0,int y0,int x1,int y1,Color c )
 		PutPixel( int( xpxl2 ),int( ypxl2 + 1 ),c,float( yend - floor( yend ) * xgap ) );
 	}
 
-			// main loop
+	// main loop
 	if( steep )
 	{
 		// for x from xpxl1 + 1 to xpxl2 - 1 do
@@ -463,6 +468,96 @@ void Graphics::DrawLine( int x0,int y0,int x1,int y1,Color c )
 			PutPixel( x,int( floor( intery ) ),c,float( 1 - intery - floor( intery ) ) );
 			PutPixel( x,int( floor( intery ) + 1 ),c,float( intery - floor( intery ) ) );
 			intery = intery + gradient;
+		}
+	}
+}
+
+void Graphics::DrawSpriteNonChroma( int x,int y,const Surface& s )
+{
+	DrawSpriteNonChroma( x,y,s.GetRect(),s );
+}
+
+void Graphics::DrawSpriteNonChroma( int x,int y,const Rect& srcRect,const Surface& s )
+{
+	DrawSpriteNonChroma( x,y,srcRect,GetScreenRect(),s );
+}
+
+void Graphics::DrawSpriteNonChroma( int x,int y,Rect srcRect,const Rect& clip,const Surface& s )
+{
+	assert( srcRect.left >= 0 );
+	assert( srcRect.right <= s.GetWidth() );
+	assert( srcRect.top >= 0 );
+	assert( srcRect.bottom <= s.GetHeight() );
+	if( x < clip.left )
+	{
+		srcRect.left += clip.left - float( x );
+		x = int( clip.left );
+	}
+	if( y < clip.top )
+	{
+		srcRect.top += clip.top - float( y );
+		y = int( clip.top );
+	}
+	if( x + srcRect.GetWidth() > clip.right )
+	{
+		srcRect.right -= x + srcRect.GetWidth() - clip.right;
+	}
+	if( y + srcRect.GetHeight() > clip.bottom )
+	{
+		srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
+	}
+	for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
+	{
+		for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
+		{
+			PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),s.GetPixel( sx,sy ) );
+		}
+	}
+}
+
+void Graphics::DrawSprite( int x,int y,const Surface& s,Color chroma )
+{
+	DrawSprite( x,y,s.GetRect(),s,chroma );
+}
+
+void Graphics::DrawSprite( int x,int y,const Rect& srcRect,const Surface& s,Color chroma )
+{
+	DrawSprite( x,y,srcRect,GetScreenRect(),s,chroma );
+}
+
+void Graphics::DrawSprite( int x,int y,Rect srcRect,const Rect& clip,const Surface& s,Color chroma )
+{
+	assert( srcRect.left >= 0 );
+	assert( srcRect.right <= s.GetWidth() );
+	assert( srcRect.top >= 0 );
+	assert( srcRect.bottom <= s.GetHeight() );
+	if( x < clip.left )
+	{
+		srcRect.left += clip.left - x;
+		x = int( clip.left );
+	}
+	if( y < clip.top )
+	{
+		srcRect.top += clip.top - y;
+		y = int( clip.top );
+	}
+	if( x + srcRect.GetWidth() > clip.right )
+	{
+		srcRect.right -= x + srcRect.GetWidth() - clip.right;
+	}
+	if( y + srcRect.GetHeight() > clip.bottom )
+	{
+		srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
+	}
+	for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
+	{
+		for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
+		{
+			const Color srcPixel = s.GetPixel( sx,sy );
+			if( srcPixel != chroma )
+			{
+				PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),srcPixel );
+			}
 		}
 	}
 }

@@ -40,7 +40,7 @@ void Food::Update( float dt )
 
 void Food::Draw( Graphics& gfx ) const
 {
-	gfx.DrawRect( pos.x,pos.y,size.x,size.y,Colors::Magenta );
+	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Magenta );
 }
 
 const Vec2& Food::GetPos() const
@@ -66,6 +66,11 @@ void HotDog::Update( float dt )
 	pos += diff.GetNormalized() * speed * dt;
 
 	Food::Update( dt );
+}
+
+void HotDog::Draw( Graphics& gfx ) const
+{
+	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
 }
 
 void HotDog::Target( const Vec2& targetPos )

@@ -36,20 +36,28 @@ public:
 	{}
 	constexpr Color( unsigned char x,unsigned char r,unsigned char g,unsigned char b )
 		:
-		dword( (x << 24u) | (r << 16u) | (g << 8u) | b )
+		dword( ( x << 24u ) | ( r << 16u ) | ( g << 8u ) | b )
 	{}
 	constexpr Color( unsigned char r,unsigned char g,unsigned char b )
 		:
-		dword( (r << 16u) | (g << 8u) | b )
+		dword( ( r << 16u ) | ( g << 8u ) | b )
 	{}
 	constexpr Color( Color col,unsigned char x )
 		:
-		Color( (x << 24u) | col.dword )
+		Color( ( x << 24u ) | col.dword )
 	{}
 	Color& operator =( Color color )
 	{
 		dword = color.dword;
 		return *this;
+	}
+	bool operator==( const Color& rhs ) const
+	{
+		return dword == rhs.dword;
+	}
+	bool operator!=( const Color& rhs ) const
+	{
+		return !( *this == rhs );
 	}
 	constexpr unsigned char GetX() const
 	{
@@ -61,11 +69,11 @@ public:
 	}
 	constexpr unsigned char GetR() const
 	{
-		return (dword >> 16u) & 0xFFu;
+		return ( dword >> 16u ) & 0xFFu;
 	}
 	constexpr unsigned char GetG() const
 	{
-		return (dword >> 8u) & 0xFFu;
+		return ( dword >> 8u ) & 0xFFu;
 	}
 	constexpr unsigned char GetB() const
 	{
@@ -73,7 +81,7 @@ public:
 	}
 	void SetX( unsigned char x )
 	{
-		dword = (dword & 0xFFFFFFu) | (x << 24u);
+		dword = ( dword & 0xFFFFFFu ) | ( x << 24u );
 	}
 	void SetA( unsigned char a )
 	{
@@ -81,15 +89,15 @@ public:
 	}
 	void SetR( unsigned char r )
 	{
-		dword = (dword & 0xFF00FFFFu) | (r << 16u);
+		dword = ( dword & 0xFF00FFFFu ) | ( r << 16u );
 	}
 	void SetG( unsigned char g )
 	{
-		dword = (dword & 0xFFFF00FFu) | (g << 8u);
+		dword = ( dword & 0xFFFF00FFu ) | ( g << 8u );
 	}
 	void SetB( unsigned char b )
 	{
-		dword = (dword & 0xFFFFFF00u) | b;
+		dword = ( dword & 0xFFFFFF00u ) | b;
 	}
 };
 
@@ -97,7 +105,7 @@ namespace Colors
 {
 	static constexpr Color MakeRGB( unsigned char r,unsigned char g,unsigned char b )
 	{
-		return (r << 16) | (g << 8) | b;
+		return ( r << 16 ) | ( g << 8 ) | b;
 	}
 	static constexpr Color White = MakeRGB( 255u,255u,255u );
 	static constexpr Color Black = MakeRGB( 0u,0u,0u );

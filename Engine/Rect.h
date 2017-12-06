@@ -16,6 +16,8 @@ public:
 	void MoveTo( const Vec2& pos );
 	Rect GetExpanded( float offset ) const;
 	Vec2 GetCenter() const;
+	float GetWidth() const;
+	float GetHeight() const;
 public:
 	float left;
 	float right;
