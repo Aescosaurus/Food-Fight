@@ -28,6 +28,7 @@ Game::Game( MainWindow& wnd )
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
 	hotDogs.emplace_back( HotDog() );
+	tables.emplace_back( Table( { float( rng.NextInt( 0,500 ) ),float( rng.NextInt( 0,500 ) ) } ) );
 }
 
 void Game::Go()
@@ -58,6 +59,11 @@ void Game::ComposeFrame()
 	for( const HotDog& hd : hotDogs )
 	{
 		hd.Draw( gfx );
+	}
+
+	for( const Table& t : tables )
+	{
+		t.Draw( gfx );
 	}
 
 	p.Draw( gfx );

@@ -29,6 +29,7 @@
 #include "Enemy.h"
 #include <vector>
 #include "Food.h"
+#include "Table.h"
 
 class Game
 {
@@ -52,5 +53,6 @@ private:
 	Random rng;
 	Player p;
 	std::vector<HotDog> hotDogs;
+	std::vector<Table> tables;
 	/********************************/
 };
