@@ -54,6 +54,7 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+	// gfx.DrawRect( 0,0,Graphics::ScreenWidth,Graphics::ScreenHeight,Colors::Cyan );
 	for( const HotDog& hd : hotDogs )
 	{
 		hd.Draw( gfx );

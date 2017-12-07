@@ -41,7 +41,7 @@ public:
 	void Target( const Vec2& targetPos );
 private:
 	static constexpr float speed = 30.5f;
-	const Surface spr = { "../../HotDog.bmp" };
+	const Surface spr = { "Images/HotDog.bmp" };
 	Vec2 target;
 	MoveState state = MoveState::Waiting;
 };

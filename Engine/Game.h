@@ -28,7 +28,6 @@
 #include "Random.h"
 #include "Enemy.h"
 #include <vector>
-#include "Foods.h"
 #include "Food.h"
 
 class Game
@@ -52,8 +51,6 @@ private:
 	TimeStep ft;
 	Random rng;
 	Player p;
-	// std::vector<Enemy> enemies;
-	// std::vector<Foods::Cabbage> cabbages;
 	std::vector<HotDog> hotDogs;
 	/********************************/
 };
