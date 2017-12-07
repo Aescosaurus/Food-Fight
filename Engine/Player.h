@@ -10,7 +10,7 @@ public:
 	Player( class Random& rng );
 	Player( const Vec2& pos );
 	void Update( class Keyboard& kbd,float dt );
-	void Draw( class Graphics& gfx,const Rect& scrRect ) const;
+	void Draw( class Graphics& gfx ) const;
 
 	const Vec2& GetPos() const;
 private:

@@ -1,6 +1,7 @@
 #include "Food.h"
 #include "Random.h"
 #include "Graphics.h"
+#include <cassert>
 
 Food::Food()
 	:
@@ -60,16 +61,29 @@ HotDog::HotDog()
 	target = { 0.0f,0.0f };
 }
 
-void HotDog::Update( float dt )
+void HotDog::Update( float dt,Random& rng )
 {
-	const Vec2 diff = target - pos;
-	pos += diff.GetNormalized() * speed * dt;
+	if( rng.NextInt( 0,10 ) > 5 )
+	{
+		state = MoveState::Waiting;
+	}
+	else
+	{
+		state = MoveState::Moving;
+	}
+
+	if( state == MoveState::Moving )
+	{
+		const Vec2 diff = target - pos;
+		pos += diff.GetNormalized() * speed * dt;
+	}
 
 	Food::Update( dt );
 }
 
 void HotDog::Draw( Graphics& gfx ) const
 {
+	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
 	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
 }
 

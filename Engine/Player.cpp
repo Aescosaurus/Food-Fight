@@ -52,9 +52,9 @@ void Player::Update( Keyboard& kbd,float dt )
 	hitbox.MoveTo( pos );
 }
 
-void Player::Draw( Graphics& gfx,const Rect& scrRect ) const
+void Player::Draw( Graphics& gfx ) const
 {
-	assert( hitbox.IsContainedBy( scrRect ) );
+	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
 	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
 }
 

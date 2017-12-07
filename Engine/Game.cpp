@@ -27,7 +27,6 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
-	// cabbages.emplace_back( Foods::Cabbage( Vec2( 50.0f,50.0f ) ) );
 	hotDogs.emplace_back( HotDog() );
 }
 
@@ -45,36 +44,9 @@ void Game::UpdateModel()
 
 	p.Update( wnd.kbd,dt );
 
-	// for( Enemy& e : enemies )
-	// {
-	// 	const Vec2 target = p.GetPos();
-	// 	e.SetTarget( target );
-	// 
-	// 	for( Enemy& e2 : enemies )
-	// 	{
-	// 		if( e.GetRect().IsOverlappingWith( e2.GetRect().GetExpanded( 5.0f ) ) && ( &e != &e2 ) )
-	// 		{
-	// 			e.SetAvoidTarget( e2.GetPos() );
-	// 			break;
-	// 		}
-	// 	}
-	// 
-	// 	e.Update( dt );
-	// }
-	// if( rng.NextInt( 0,99 ) > 98 )
-	// {
-	// 	enemies.emplace_back( Enemy( rng ) );
-	// }
-
-	// for( Foods::Cabbage& c : cabbages )
-	// {
-	// 	c.SetDir( p.GetPos() );
-	// 
-	// 	c.Update( dt );
-	// }
 	for( HotDog& hd : hotDogs )
 	{
-		hd.Update( dt );
+		hd.Update( dt,rng );
 
 		hd.Target( p.GetPos() );
 	}
@@ -82,20 +54,10 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	// for( const Enemy& e : enemies )
-	// {
-	// 	e.Draw( gfx,scrRect );
-	// }
-
-	// for( const Foods::Cabbage& c : cabbages )
-	// {
-	// 	c.Draw( gfx );
-	// }
-
 	for( const HotDog& hd : hotDogs )
 	{
 		hd.Draw( gfx );
 	}
 
-	p.Draw( gfx,scrRect );
+	p.Draw( gfx );
 }

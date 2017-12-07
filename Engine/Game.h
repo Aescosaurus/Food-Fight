@@ -55,6 +55,5 @@ private:
 	// std::vector<Enemy> enemies;
 	// std::vector<Foods::Cabbage> cabbages;
 	std::vector<HotDog> hotDogs;
-	const Rect scrRect = { 0.0f,float( Graphics::ScreenWidth ),0.0f,float( Graphics::ScreenHeight ) };
 	/********************************/
 };

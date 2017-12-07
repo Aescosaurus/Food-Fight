@@ -26,10 +26,16 @@ private:
 
 class HotDog : public Food
 {
+private:
+	enum class MoveState
+	{
+		Moving,
+		Waiting
+	};
 public:
 	HotDog();
 
-	void Update( float dt );
+	void Update( float dt,class Random& rng );
 	void Draw( class Graphics& gfx ) const;
 
 	void Target( const Vec2& targetPos );
@@ -37,4 +43,5 @@ private:
 	static constexpr float speed = 30.5f;
 	const Surface spr = { "../../HotDog.bmp" };
 	Vec2 target;
+	MoveState state = MoveState::Waiting;
 };
