@@ -50,3 +50,8 @@ const Rect& Bullet::GetRect() const
 {
 	return hitbox;
 }
+
+const Vec2& Bullet::GetSize()
+{
+	return size;
+}

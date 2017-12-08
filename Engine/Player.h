@@ -18,9 +18,10 @@ public:
 	bool Fire();
 
 	const Vec2& GetPos() const;
+	static const Vec2& GetSize();
 private:
 	static constexpr float moveSpeed = 170.0f;
-	const Vec2 size;
+	static const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
 	int shotTimer = 0;

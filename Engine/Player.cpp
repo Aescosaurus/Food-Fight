@@ -5,9 +5,10 @@
 #include "Random.h"
 #include "Mouse.h"
 
+const Vec2 Player::size = { 50.0f,50.0f };
+
 Player::Player()
 	:
-	size( 50.0f,50.0f ),
 	pos( 0.0f,0.0f ),
 	hitbox( pos,pos + size )
 {
@@ -79,4 +80,9 @@ bool Player::Fire()
 const Vec2& Player::GetPos() const
 {
 	return pos;
+}
+
+const Vec2& Player::GetSize()
+{
+	return size;
 }
