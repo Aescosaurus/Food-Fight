@@ -39,10 +39,14 @@ public:
 	void Update( float dt,class Random& rng );
 	void Draw( class Graphics& gfx ) const;
 
+	void Hurt( int amount );
+
 	void Target( const Vec2& targetPos );
 private:
 	static constexpr float speed = 30.5f;
 	const Surface spr = { "Images/HotDog.bmp" };
 	Vec2 target;
 	MoveState state = MoveState::Waiting;
+	static constexpr int maxHP = 10;
+	int hp = maxHP;
 };

@@ -45,11 +45,35 @@ void Game::UpdateModel()
 
 	p.Update( wnd.kbd,wnd.mouse,dt );
 
+	if( wnd.mouse.LeftIsPressed() && p.Fire() )
+	{
+		bullets.emplace_back( Bullet( p.GetPos(),{ float( wnd.mouse.GetPosX() ),float( wnd.mouse.GetPosY() ) } ) );
+	}
+
+	for( int i = 0; i < bullets.size(); ++i )
+	{
+		Bullet& b = bullets[i];
+		b.Update( dt );
+		if( !b )
+		{
+			bullets.erase( bullets.begin() + i );
+		}
+	}
+
 	for( HotDog& hd : hotDogs )
 	{
 		hd.Update( dt,rng );
 
 		hd.Target( p.GetPos() );
+
+		for( Bullet& b : bullets )
+		{
+			if( hd.GetRect().IsOverlappingWith( b.GetRect() ) )
+			{
+				b.Kill();
+				hd.Hurt( 1 );
+			}
+		}
 	}
 }
 
@@ -67,4 +91,9 @@ void Game::ComposeFrame()
 	}
 
 	p.Draw( gfx );
+
+	for( const Bullet& b : bullets )
+	{
+		b.Draw( gfx );
+	}
 }

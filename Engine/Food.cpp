@@ -63,13 +63,18 @@ HotDog::HotDog()
 
 void HotDog::Update( float dt,Random& rng )
 {
-	if( rng.NextInt( 0,10 ) > 5 )
+	const int rngNum = rng.NextInt( 0,10 );
+	if( rngNum > 6 )
 	{
 		state = MoveState::Waiting;
 	}
-	else
+	else if( rngNum > 4 )
 	{
 		state = MoveState::Moving;
+	}
+	else
+	{
+		// State is still being hurt.
 	}
 
 	if( state == MoveState::Moving )
@@ -79,7 +84,6 @@ void HotDog::Update( float dt,Random& rng )
 	}
 
 	Food::Update( dt );
-	state = MoveState::Hurt;
 }
 
 void HotDog::Draw( Graphics& gfx ) const
@@ -93,6 +97,12 @@ void HotDog::Draw( Graphics& gfx ) const
 	{
 		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta );
 	}
+}
+
+void HotDog::Hurt( int amount )
+{
+	hp -= amount;
+	state = MoveState::Hurt;
 }
 
 void HotDog::Target( const Vec2& targetPos )

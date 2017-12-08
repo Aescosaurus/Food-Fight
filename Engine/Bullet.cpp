@@ -30,7 +30,17 @@ void Bullet::Draw( Graphics& gfx ) const
 	gfx.DrawCircle( int( pos.x + size.x / 2 ),int( pos.y + size.y / 2 ),int( size.x / 2 ),Colors::Blue );
 }
 
+void Bullet::Kill()
+{
+	willDestroy = true;
+}
+
 Bullet::operator bool() const
 {
 	return !willDestroy;
+}
+
+const Rect& Bullet::GetRect() const
+{
+	return hitbox;
 }

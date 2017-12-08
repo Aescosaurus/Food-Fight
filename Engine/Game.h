@@ -30,6 +30,7 @@
 #include <vector>
 #include "Food.h"
 #include "Table.h"
+#include "Bullet.h"
 
 class Game
 {
@@ -54,5 +55,6 @@ private:
 	Player p;
 	std::vector<HotDog> hotDogs;
 	std::vector<Table> tables;
+	std::vector<Bullet> bullets;
 	/********************************/
 };

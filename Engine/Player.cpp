@@ -52,19 +52,9 @@ void Player::Update( const Keyboard& kbd,const Mouse& ms,float dt )
 	
 	hitbox.MoveTo( pos );
 
-	if( ms.LeftIsPressed() )
+	if( shotTimer <= refireTime )
 	{
-		bullets.emplace_back( Bullet( pos,{ float( ms.GetPosX() ),float( ms.GetPosY() ) } ) );
-	}
-
-	for( int i = 0; i < bullets.size(); ++i )
-	{
-		Bullet& b = bullets[i];
-		b.Update( dt );
-		if( !b )
-		{
-			bullets.erase( bullets.begin() + i );
-		}
+		++shotTimer;
 	}
 }
 
@@ -72,11 +62,16 @@ void Player::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
 	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
+}
 
-	for( const Bullet& b : bullets )
+bool Player::Fire()
+{
+	const bool canFire = ( shotTimer >= refireTime );
+	if( canFire )
 	{
-		b.Draw( gfx );
+		shotTimer = 0;
 	}
+	return canFire;
 }
 
 const Vec2& Player::GetPos() const
