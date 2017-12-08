@@ -13,7 +13,10 @@ public:
 	void Update( float dt );
 	void Draw( class Graphics& gfx ) const;
 
+	void Kill();
+
 	operator bool() const;
+	const Rect& GetRect() const;
 private:
 	static constexpr float speed = 150.5f;
 	static const Surface spr;

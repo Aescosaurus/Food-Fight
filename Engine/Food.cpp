@@ -3,6 +3,8 @@
 #include "Graphics.h"
 #include <cassert>
 
+const Surface HotDog::spr = Surface( "Images/HotDog.bmp" );
+
 Food::Food()
 	:
 	size( 50.0f,50.0f ),
@@ -59,17 +61,24 @@ HotDog::HotDog()
 	Food( { 0.0f,0.0f },{ 30.0f,70.0f } )
 {
 	target = { 0.0f,0.0f };
+	hitbox = spr.GetRect();
+	hitbox.MoveTo( pos );
 }
 
 void HotDog::Update( float dt,Random& rng )
 {
-	if( rng.NextInt( 0,10 ) > 5 )
+	const int rngNum = rng.NextInt( 0,10 );
+	if( rngNum > 6 )
 	{
 		state = MoveState::Waiting;
 	}
-	else
+	else if( rngNum > 4 )
 	{
 		state = MoveState::Moving;
+	}
+	else
+	{
+		// State is still being hurt.
 	}
 
 	if( state == MoveState::Moving )
@@ -84,7 +93,22 @@ void HotDog::Update( float dt,Random& rng )
 void HotDog::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
-	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
+	if( state != MoveState::Hurt )
+	{
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
+	}
+	else
+	{
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta );
+	}
+
+	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
+}
+
+void HotDog::Hurt( int amount )
+{
+	hp -= amount;
+	state = MoveState::Hurt;
 }
 
 void HotDog::Target( const Vec2& targetPos )

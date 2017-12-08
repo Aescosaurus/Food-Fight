@@ -2,6 +2,7 @@
 
 #include "Vec2.h"
 #include "Surface.h"
+#include "Rect.h"
 
 class Table
 {
@@ -10,7 +11,8 @@ public:
 
 	void Draw( class Graphics& gfx ) const;
 private:
-	Vec2 pos;
+	static const Surface spr;
 	const Vec2 size;
-	const Surface spr = { "Images/Table1.bmp" };
+	Vec2 pos;
+	Rect hitbox;
 };
