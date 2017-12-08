@@ -43,7 +43,7 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 
-	p.Update( wnd.kbd,dt );
+	p.Update( wnd.kbd,wnd.mouse,dt );
 
 	for( HotDog& hd : hotDogs )
 	{

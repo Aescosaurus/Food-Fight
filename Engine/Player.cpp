@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include <cassert>
 #include "Random.h"
+#include "Mouse.h"
 
 Player::Player()
 	:
@@ -27,7 +28,7 @@ Player::Player( const Vec2& pos_in )
 	pos = pos_in - size;
 }
 
-void Player::Update( Keyboard& kbd,float dt )
+void Player::Update( const Keyboard& kbd,const Mouse& ms,float dt )
 {
 	const float moveTurn = moveSpeed * dt;
 	Vec2 moveAmount = Vec2( 0.0f,0.0f );
@@ -50,12 +51,32 @@ void Player::Update( Keyboard& kbd,float dt )
 	pos += moveAmount.GetNormalized() * moveTurn;
 	
 	hitbox.MoveTo( pos );
+
+	if( ms.LeftIsPressed() )
+	{
+		bullets.emplace_back( Bullet( pos,{ float( ms.GetPosX() ),float( ms.GetPosY() ) } ) );
+	}
+
+	for( int i = 0; i < bullets.size(); ++i )
+	{
+		Bullet& b = bullets[i];
+		b.Update( dt );
+		if( !b )
+		{
+			bullets.erase( bullets.begin() + i );
+		}
+	}
 }
 
 void Player::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
 	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
+
+	for( const Bullet& b : bullets )
+	{
+		b.Draw( gfx );
+	}
 }
 
 const Vec2& Player::GetPos() const
