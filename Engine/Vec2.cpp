@@ -60,6 +60,11 @@ Vec2& Vec2::operator-()
 	return *this;
 }
 
+const Vec2& Vec2::operator-() const
+{
+	return { -x,-y };
+}
+
 float Vec2::GetLength() const
 {
 	return std::sqrt( GetLengthSq() );

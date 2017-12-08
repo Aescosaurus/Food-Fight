@@ -44,6 +44,14 @@ void Game::UpdateModel()
 	const float dt = ft.Mark();
 
 	p.Update( wnd.kbd,wnd.mouse,dt );
+	for( Table& t : tables )
+	{
+		if( t.GetRect().IsOverlappingWith( p.GetRect() ) )
+		{
+			t.Move( p.GetVel() );
+			p.Move( t.GetMoveAmount() );
+		}
+	}
 
 	if( wnd.mouse.LeftIsPressed() && p.Fire() )
 	{
@@ -55,6 +63,15 @@ void Game::UpdateModel()
 	{
 		Bullet& b = bullets[i];
 		b.Update( dt );
+
+		for( const Table& t : tables )
+		{
+			if( t.GetRect().IsOverlappingWith( b.GetRect() ) )
+			{
+				b.Kill();
+			}
+		}
+
 		if( !b )
 		{
 			bullets.erase( bullets.begin() + i );

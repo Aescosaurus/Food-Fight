@@ -18,3 +18,26 @@ void Table::Draw( Graphics& gfx ) const
 
 	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
 }
+
+void Table::Move( const Vec2& pushVel )
+{
+	pos += pushVel;
+	hitbox.MoveTo( pos );
+	moveAmount = -pushVel;
+	if( !hitbox.GetExpanded( 1.0f ).IsContainedBy( Graphics::GetScreenRect() ) )
+	{
+		pos -= pushVel;
+		hitbox.MoveTo( pos );
+		moveAmount;
+	}
+}
+
+const Rect& Table::GetRect() const
+{
+	return hitbox;
+}
+
+const Vec2& Table::GetMoveAmount() const
+{
+	return moveAmount;
+}
