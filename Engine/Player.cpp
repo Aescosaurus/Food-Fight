@@ -32,19 +32,19 @@ void Player::Update( const Keyboard& kbd,const Mouse& ms,float dt )
 {
 	const float moveTurn = moveSpeed * dt;
 	Vec2 moveAmount = Vec2( 0.0f,0.0f );
-	if( kbd.KeyIsPressed( int( 'W' ) ) && hitbox.top - moveTurn > 0.0f )
+	if( kbd.KeyIsPressed( int( 'W' ) ) && hitbox.top - moveTurn > 1.0f )
 	{
 		--moveAmount.y;
 	}
-	if( kbd.KeyIsPressed( int( 'S' ) ) && hitbox.bottom + moveTurn < float( Graphics::ScreenHeight ) )
+	if( kbd.KeyIsPressed( int( 'S' ) ) && hitbox.bottom + moveTurn < float( Graphics::ScreenHeight - 1 ) )
 	{
 		++moveAmount.y;
 	}
-	if( kbd.KeyIsPressed( int( 'A' ) ) && hitbox.left - moveTurn > 0.0f )
+	if( kbd.KeyIsPressed( int( 'A' ) ) && hitbox.left - moveTurn > 1.0f )
 	{
 		--moveAmount.x;
 	}
-	if( kbd.KeyIsPressed( int( 'D' ) ) && hitbox.right + moveTurn < float( Graphics::ScreenWidth ) )
+	if( kbd.KeyIsPressed( int( 'D' ) ) && hitbox.right + moveTurn < float( Graphics::ScreenWidth - 1 ) )
 	{
 		++moveAmount.x;
 	}
