@@ -44,9 +44,9 @@ public:
 
 	void Hurt( int amount );
 	void Target( const Vec2& targetPos );
-	void Avoid( const class Table& t );
 
 	operator bool() const;
+	const Vec2& GetTarget() const;
 private:
 	static constexpr float speed = 30.5f;
 	static const Surface spr;

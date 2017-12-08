@@ -60,7 +60,7 @@ Vec2& Vec2::operator-()
 	return *this;
 }
 
-const Vec2& Vec2::operator-() const
+const Vec2 Vec2::operator-() const
 {
 	return { -x,-y };
 }

@@ -93,12 +93,39 @@ void Game::UpdateModel()
 			}
 		}
 
-		// TODO: Loop through tables and do something like push them away idk.
 		for( Table& t : tables )
 		{
-			if( hd.GetRect().IsOverlappingWith( t.GetRect() ) )
+			// int nextTarget = 0;
+			// do
+			// {
+			// 	hd.Target( t.GetTarget( nextTarget ) );
+			// }
+			// while( !t.GetRect().Covers( hd.GetPos(),hd.GetTarget(),Graphics::GetScreenRect() ) &&
+			// 	nextTarget <= t.CountTargets() );
+
+			// for( int i = 0; i < t.CountTargets(); ++i )
+			// {
+			// 	if( t.GetRect().Covers( hd.GetPos(),hd.GetTarget(),Graphics::GetScreenRect() ) )
+			// 	{
+			// 		hd.Target( t.GetTarget( i ) );
+			// 	}
+			// }
+
+			if( t.GetRect().Covers( hd.GetPos(),hd.GetTarget(),Graphics::GetScreenRect() ) )
 			{
-				hd.Avoid( t );
+				float distFromPlayer = 0.0f;
+				int closest = 0;
+				for( int i = 0; i < t.CountTargets(); ++i )
+				{
+					const Vec2 diff = { p.GetPos() - t.GetTarget( i ) };
+					if( diff.GetLengthSq() > distFromPlayer )
+					{
+						distFromPlayer = diff.GetLengthSq();
+						closest = i;
+					}
+				}
+
+				hd.Target( t.GetTarget( i ) );
 			}
 		}
 

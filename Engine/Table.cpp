@@ -23,3 +23,14 @@ const Rect& Table::GetRect() const
 {
 	return hitbox;
 }
+
+int Table::CountTargets() const
+{
+	return numTargets;
+}
+
+const Vec2& Table::GetTarget( int num ) const
+{
+	return targets[num];
+}
+
