@@ -30,7 +30,8 @@ private:
 	enum class MoveState
 	{
 		Moving,
-		Waiting
+		Waiting,
+		Hurt
 	};
 public:
 	HotDog();

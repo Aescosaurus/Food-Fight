@@ -562,6 +562,52 @@ void Graphics::DrawSprite( int x,int y,Rect srcRect,const Rect& clip,const Surfa
 	}
 }
 
+void Graphics::DrawSprite( int x,int y,const Surface& s,Color overlay,Color chroma )
+{
+	Rect srcRect = s.GetRect();
+	Rect clip = GetScreenRect();
+	assert( srcRect.left >= 0 );
+	assert( srcRect.right <= s.GetWidth() );
+	assert( srcRect.top >= 0 );
+	assert( srcRect.bottom <= s.GetHeight() );
+	if( x < clip.left )
+	{
+		srcRect.left += clip.left - float( x );
+		x = int( clip.left );
+	}
+	if( y < clip.top )
+	{
+		srcRect.top += clip.top - float( y );
+		y = int( clip.top );
+	}
+	if( x + srcRect.GetWidth() > clip.right )
+	{
+		srcRect.right -= x + srcRect.GetWidth() - clip.right;
+	}
+	if( y + srcRect.GetHeight() > clip.bottom )
+	{
+		srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
+	}
+	for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
+	{
+		for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
+		{
+			// Blend pixel with overlay color.  ;)
+			const Color srcPixel = s.GetPixel( sx,sy );
+			if( srcPixel != chroma )
+			{
+				const Color blendedPixel =
+				{
+					unsigned char( ( srcPixel.GetR() + overlay.GetR() ) / 2 ),
+					unsigned char( ( srcPixel.GetG() + overlay.GetG() ) / 2 ),
+					unsigned char( ( srcPixel.GetB() + overlay.GetB() ) / 2 )
+				};
+				PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),blendedPixel );
+			}
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception

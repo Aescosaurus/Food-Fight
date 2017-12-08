@@ -79,12 +79,20 @@ void HotDog::Update( float dt,Random& rng )
 	}
 
 	Food::Update( dt );
+	state = MoveState::Hurt;
 }
 
 void HotDog::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
-	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
+	if( state != MoveState::Hurt )
+	{
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
+	}
+	else
+	{
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta );
+	}
 }
 
 void HotDog::Target( const Vec2& targetPos )
