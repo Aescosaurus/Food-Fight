@@ -1,6 +1,8 @@
 #include "Table.h"
 #include "Graphics.h"
 
+const Surface Table::spr = { "Images/Table1.bmp" };
+
 Table::Table( const Vec2& pos )
 	:
 	size( 64.0f,32.0f ),

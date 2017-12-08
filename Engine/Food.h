@@ -44,7 +44,7 @@ public:
 	void Target( const Vec2& targetPos );
 private:
 	static constexpr float speed = 30.5f;
-	const Surface spr = { "Images/HotDog.bmp" };
+	static const Surface spr;
 	Vec2 target;
 	MoveState state = MoveState::Waiting;
 	static constexpr int maxHP = 10;

@@ -3,6 +3,8 @@
 #include "Graphics.h"
 #include <cassert>
 
+const Surface HotDog::spr = Surface( "Images/HotDog.bmp" );
+
 Food::Food()
 	:
 	size( 50.0f,50.0f ),
