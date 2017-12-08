@@ -472,6 +472,26 @@ void Graphics::DrawLine( int x0,int y0,int x1,int y1,Color c )
 	}
 }
 
+void Graphics::DrawHitbox( const Rect& r,Color c,bool outlineOnly )
+{
+	const int x1 = int( r.left );
+	const int x2 = int( r.right );
+	const int y1 = int( r.top );
+	const int y2 = int( r.bottom );
+
+	if( !outlineOnly )
+	{
+		DrawRectDim( x1,y1,x2,y2,c );
+	}
+	else
+	{
+		DrawLine( x1,y1,x1,y2,c ); // Left.
+		DrawLine( x1,y1,x2,y1,c ); // Top.
+		DrawLine( x2,y1,x2,y2,c ); // Right.
+		DrawLine( x2,y2,x1,y2,c ); // Bottom.
+	}
+}
+
 void Graphics::DrawSpriteNonChroma( int x,int y,const Surface& s )
 {
 	DrawSpriteNonChroma( x,y,s.GetRect(),s );

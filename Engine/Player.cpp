@@ -62,6 +62,8 @@ void Player::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
 	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
+
+	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
 }
 
 bool Player::Fire()

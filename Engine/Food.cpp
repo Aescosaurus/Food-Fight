@@ -59,6 +59,8 @@ HotDog::HotDog()
 	Food( { 0.0f,0.0f },{ 30.0f,70.0f } )
 {
 	target = { 0.0f,0.0f };
+	hitbox = spr.GetRect();
+	hitbox.MoveTo( pos );
 }
 
 void HotDog::Update( float dt,Random& rng )
@@ -97,6 +99,8 @@ void HotDog::Draw( Graphics& gfx ) const
 	{
 		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta );
 	}
+
+	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
 }
 
 void HotDog::Hurt( int amount )

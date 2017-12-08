@@ -28,7 +28,7 @@ Game::Game( MainWindow& wnd )
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
 	hotDogs.emplace_back( HotDog() );
-	tables.emplace_back( Table( { float( rng.NextInt( 0,500 ) ),float( rng.NextInt( 0,500 ) ) } ) );
+	tables.emplace_back( Table( { float( rng.NextInt( 0,400 ) ),float( rng.NextInt( 0,400 ) ) } ) );
 }
 
 void Game::Go()

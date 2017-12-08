@@ -4,11 +4,15 @@
 Table::Table( const Vec2& pos )
 	:
 	size( 64.0f,32.0f ),
-	pos( pos )
+	pos( pos ),
+	hitbox( spr.GetRect() )
 {
+	hitbox.MoveTo( pos );
 }
 
 void Table::Draw( Graphics& gfx ) const
 {
 	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
+
+	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
 }

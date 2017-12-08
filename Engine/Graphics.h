@@ -61,13 +61,17 @@ public:
 	void PutPixel( int x,int y,Color c );
 	void PutPixel( int x,int y,Color c,unsigned char alpha );
 	void PutPixel( int x,int y,Color c,float alpha );
+
 	void DrawRect( int x,int y,int width,int height,Color c );
 	void DrawRectDim( int x1,int y1,int x2,int y2,Color c );
 	void DrawCircle( int x,int y,int radius,Color c );
 	void DrawLine( int x0,int y0,int x1,int y1,Color c );
+	void DrawHitbox( const Rect& r,Color c,bool outlineOnly = true );
+
 	void DrawSpriteNonChroma( int x,int y,const Surface& s );
 	void DrawSpriteNonChroma( int x,int y,const Rect& srcRect,const Surface& s );
 	void DrawSpriteNonChroma( int x,int y,Rect srcRect,const Rect& clip,const Surface& s );
+
 	void DrawSprite( int x,int y,const Surface& s,Color chroma = Colors::Magenta );
 	void DrawSprite( int x,int y,const Rect& srcRect,const Surface& s,Color chroma = Colors::Magenta );
 	void DrawSprite( int x,int y,Rect srcRect,const Rect& clip,const Surface& s,Color chroma = Colors::Magenta );
