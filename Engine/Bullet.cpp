@@ -19,7 +19,9 @@ void Bullet::Update( float dt )
 	pos += vel * speed * dt;
 
 	hitbox.MoveTo( pos );
-	if( !hitbox.IsContainedBy( Graphics::GetScreenRect() ) )
+	// Needs to be expanded because DrawHitbox sometimes goes like
+	//  0.01 opacity pixel 1 outside the screen.
+	if( !hitbox.GetExpanded( 1 ).IsContainedBy( Graphics::GetScreenRect() ) )
 	{
 		willDestroy = true;
 	}
@@ -30,6 +32,7 @@ void Bullet::Draw( Graphics& gfx ) const
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) || willDestroy );
 	// gfx.DrawCircle( int( pos.x + size.x / 2 ),int( pos.y + size.y / 2 ),int( size.x / 2 ),Colors::Blue );
 	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
+
 	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
 }
 

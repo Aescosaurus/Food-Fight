@@ -28,6 +28,10 @@ Game::Game( MainWindow& wnd )
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
 	hotDogs.emplace_back( HotDog() );
+	hotDogs.emplace_back( HotDog() );
+	hotDogs.emplace_back( HotDog() );
+	hotDogs.emplace_back( HotDog() );
+	hotDogs.emplace_back( HotDog() );
 	tables.emplace_back( Table( { float( rng.NextInt( 0,400 ) ),float( rng.NextInt( 0,400 ) ) } ) );
 }
 
@@ -60,8 +64,9 @@ void Game::UpdateModel()
 		}
 	}
 
-	for( HotDog& hd : hotDogs )
+	for( int i = 0; i < hotDogs.size(); ++i )
 	{
+		HotDog& hd = hotDogs[i];
 		hd.Update( dt,rng );
 
 		hd.Target( p.GetPos() );
@@ -73,6 +78,11 @@ void Game::UpdateModel()
 				b.Kill();
 				hd.Hurt( 1 );
 			}
+		}
+
+		if( !hd )
+		{
+			hotDogs.erase( hotDogs.begin() + i );
 		}
 	}
 }
