@@ -78,15 +78,10 @@ bool Player::Fire()
 	return canFire;
 }
 
-void Player::Move( const Vec2& pushAmount )
+void Player::MoveBack()
 {
-	pos += pushAmount;
+	pos -= vel;
 	hitbox.MoveTo( pos );
-	if( !hitbox.GetExpanded( 1.0f ).IsContainedBy( Graphics::GetScreenRect() ) )
-	{
-		pos -= pushAmount;
-		hitbox.MoveTo( pos );
-	}
 }
 
 const Vec2& Player::GetPos() const

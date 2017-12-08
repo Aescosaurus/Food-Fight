@@ -16,7 +16,7 @@ public:
 	void Draw( class Graphics& gfx ) const;
 
 	bool Fire();
-	void Move( const Vec2& pushAmount );
+	void MoveBack();
 
 	const Vec2& GetPos() const;
 	static const Vec2& GetSize();

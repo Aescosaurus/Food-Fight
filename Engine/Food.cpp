@@ -2,6 +2,7 @@
 #include "Random.h"
 #include "Graphics.h"
 #include <cassert>
+#include "Table.h"
 
 const Surface HotDog::spr = Surface( "Images/HotDog.bmp" );
 
@@ -127,6 +128,11 @@ void HotDog::Hurt( int amount )
 void HotDog::Target( const Vec2& targetPos )
 {
 	target = targetPos;
+}
+
+void HotDog::Avoid( const Table& t )
+{
+
 }
 
 HotDog::operator bool() const

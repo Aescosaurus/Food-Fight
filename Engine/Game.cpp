@@ -48,8 +48,7 @@ void Game::UpdateModel()
 	{
 		if( t.GetRect().IsOverlappingWith( p.GetRect() ) )
 		{
-			t.Move( p.GetVel() );
-			p.Move( t.GetMoveAmount() );
+			p.MoveBack();
 		}
 	}
 
@@ -91,6 +90,15 @@ void Game::UpdateModel()
 			{
 				b.Kill();
 				hd.Hurt( 1 );
+			}
+		}
+
+		// TODO: Loop through tables and do something like push them away idk.
+		for( Table& t : tables )
+		{
+			if( hd.GetRect().IsOverlappingWith( t.GetRect() ) )
+			{
+				hd.Avoid( t );
 			}
 		}
 

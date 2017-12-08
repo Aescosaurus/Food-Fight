@@ -44,6 +44,7 @@ public:
 
 	void Hurt( int amount );
 	void Target( const Vec2& targetPos );
+	void Avoid( const class Table& t );
 
 	operator bool() const;
 private:
