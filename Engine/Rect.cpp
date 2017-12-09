@@ -1,4 +1,5 @@
 #include "Rect.h"
+#include <cmath>
 
 Rect::Rect( float left_in,float right_in,float top_in,float bottom_in )
 	:
@@ -27,10 +28,36 @@ bool Rect::IsOverlappingWith( const Rect& other ) const
 		&& bottom > other.top && top < other.bottom;
 }
 
+bool Rect::Covers( const Vec2& pos1,const Vec2& pos2,const Rect& scrRect ) const
+{
+	const Vec2 delta = Vec2( pos2 - pos1 ).Normalize();
+	Vec2 curPos = pos1;
+	while( scrRect.Contains( curPos ) )
+	{
+		curPos += delta;
+		if( curPos.x > pos2.x && curPos.y > pos2.y )
+		{
+			return false;
+		}
+		if( this->Contains( curPos ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool Rect::IsContainedBy( const Rect& other ) const
 {
 	return left >= other.left && right <= other.right &&
 		top >= other.top && bottom <= other.bottom;
+}
+
+bool Rect::Contains( const Vec2& point ) const
+{
+	return( point.x > left && point.x < right &&
+		point.y > top && point.y < bottom );
 }
 
 Rect Rect::FromCenter( const Vec2 & center,float halfWidth,float halfHeight )

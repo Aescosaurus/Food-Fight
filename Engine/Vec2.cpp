@@ -38,6 +38,11 @@ Vec2& Vec2::operator-=( const Vec2& rhs )
 	return *this = *this - rhs;
 }
 
+Vec2 Vec2::operator/( float rhs ) const
+{
+	return { x / rhs,y / rhs };
+}
+
 bool Vec2::operator==( const Vec2& rhs ) const
 {
 	return( x == rhs.x && y == rhs.y );
@@ -53,6 +58,11 @@ Vec2& Vec2::operator-()
 	x = -x;
 	y = -y;
 	return *this;
+}
+
+const Vec2 Vec2::operator-() const
+{
+	return { -x,-y };
 }
 
 float Vec2::GetLength() const

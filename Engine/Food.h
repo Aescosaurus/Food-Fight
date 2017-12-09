@@ -35,13 +35,18 @@ private:
 	};
 public:
 	HotDog();
+	
+	HotDog( const HotDog& other );
+	HotDog& operator=( const HotDog& other );
 
 	void Update( float dt,class Random& rng );
 	void Draw( class Graphics& gfx ) const;
 
 	void Hurt( int amount );
-
 	void Target( const Vec2& targetPos );
+
+	operator bool() const;
+	const Vec2& GetTarget() const;
 private:
 	static constexpr float speed = 30.5f;
 	static const Surface spr;

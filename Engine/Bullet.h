@@ -17,6 +17,7 @@ public:
 
 	operator bool() const;
 	const Rect& GetRect() const;
+	static const Vec2& GetSize();
 private:
 	static constexpr float speed = 150.5f;
 	static const Surface spr;

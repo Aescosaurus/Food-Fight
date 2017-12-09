@@ -2,6 +2,7 @@
 #include "Random.h"
 #include "Graphics.h"
 #include <cassert>
+#include "Table.h"
 
 const Surface HotDog::spr = Surface( "Images/HotDog.bmp" );
 
@@ -65,6 +66,19 @@ HotDog::HotDog()
 	hitbox.MoveTo( pos );
 }
 
+HotDog::HotDog( const HotDog& other )
+{
+	*this = other;
+}
+
+HotDog& HotDog::operator=( const HotDog& other )
+{
+	target = other.target;
+	hitbox = other.hitbox;
+
+	return *this;
+}
+
 void HotDog::Update( float dt,Random& rng )
 {
 	const int rngNum = rng.NextInt( 0,10 );
@@ -103,6 +117,7 @@ void HotDog::Draw( Graphics& gfx ) const
 	}
 
 	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
+	// gfx.DrawLine( int( pos.x ),int( pos.y ),int( target.x ),int( target.y ),Colors::Cyan );
 }
 
 void HotDog::Hurt( int amount )
@@ -114,4 +129,14 @@ void HotDog::Hurt( int amount )
 void HotDog::Target( const Vec2& targetPos )
 {
 	target = targetPos;
+}
+
+HotDog::operator bool() const
+{
+	return hp > 0;
+}
+
+const Vec2& HotDog::GetTarget() const
+{
+	return target;
 }

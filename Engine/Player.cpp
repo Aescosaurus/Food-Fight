@@ -5,9 +5,10 @@
 #include "Random.h"
 #include "Mouse.h"
 
+const Vec2 Player::size = { 50.0f,50.0f };
+
 Player::Player()
 	:
-	size( 50.0f,50.0f ),
 	pos( 0.0f,0.0f ),
 	hitbox( pos,pos + size )
 {
@@ -31,24 +32,25 @@ Player::Player( const Vec2& pos_in )
 void Player::Update( const Keyboard& kbd,const Mouse& ms,float dt )
 {
 	const float moveTurn = moveSpeed * dt;
-	Vec2 moveAmount = Vec2( 0.0f,0.0f );
-	if( kbd.KeyIsPressed( int( 'W' ) ) && hitbox.top - moveTurn > 0.0f )
+	vel = Vec2( 0.0f,0.0f );
+	if( kbd.KeyIsPressed( int( 'W' ) ) && hitbox.top - moveTurn > 1.0f )
 	{
-		--moveAmount.y;
+		--vel.y;
 	}
-	if( kbd.KeyIsPressed( int( 'S' ) ) && hitbox.bottom + moveTurn < float( Graphics::ScreenHeight ) )
+	if( kbd.KeyIsPressed( int( 'S' ) ) && hitbox.bottom + moveTurn < float( Graphics::ScreenHeight - 1 ) )
 	{
-		++moveAmount.y;
+		++vel.y;
 	}
-	if( kbd.KeyIsPressed( int( 'A' ) ) && hitbox.left - moveTurn > 0.0f )
+	if( kbd.KeyIsPressed( int( 'A' ) ) && hitbox.left - moveTurn > 1.0f )
 	{
-		--moveAmount.x;
+		--vel.x;
 	}
-	if( kbd.KeyIsPressed( int( 'D' ) ) && hitbox.right + moveTurn < float( Graphics::ScreenWidth ) )
+	if( kbd.KeyIsPressed( int( 'D' ) ) && hitbox.right + moveTurn < float( Graphics::ScreenWidth - 1 ) )
 	{
-		++moveAmount.x;
+		++vel.x;
 	}
-	pos += moveAmount.GetNormalized() * moveTurn;
+	vel = vel.GetNormalized() * moveTurn;
+	pos += vel;
 	
 	hitbox.MoveTo( pos );
 
@@ -76,7 +78,28 @@ bool Player::Fire()
 	return canFire;
 }
 
+void Player::MoveBack()
+{
+	pos -= vel;
+	hitbox.MoveTo( pos );
+}
+
 const Vec2& Player::GetPos() const
 {
 	return pos;
+}
+
+const Vec2& Player::GetSize()
+{
+	return size;
+}
+
+const Rect& Player::GetRect() const
+{
+	return hitbox;
+}
+
+const Vec2& Player::GetVel() const
+{
+	return vel;
 }
