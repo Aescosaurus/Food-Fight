@@ -30,16 +30,16 @@ bool Rect::IsOverlappingWith( const Rect& other ) const
 
 bool Rect::Covers( const Vec2& pos1,const Vec2& pos2,const Rect& scrRect ) const
 {
-	const Vec2 delta = pos2 - pos1;
-	if( delta.x == 0.0f || delta.y == 0.0f )
+	const Vec2 delta = Vec2( pos2 - pos1 ).Normalize();
+	Vec2 curPos = pos1;
+	while( scrRect.Contains( curPos ) )
 	{
-		return false;
-	}
-	Vec2 testPoint = pos1;
-	while( scrRect.Contains( testPoint ) )
-	{
-		testPoint += delta;
-		if( this->Contains( delta ) )
+		curPos += delta;
+		if( curPos.x > pos2.x && curPos.y > pos2.y )
+		{
+			return false;
+		}
+		if( this->Contains( curPos ) )
 		{
 			return true;
 		}

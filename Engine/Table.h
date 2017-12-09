@@ -22,9 +22,9 @@ private:
 	static constexpr int numTargets = 4;
 	const Vec2 targets[numTargets] =
 	{
-		pos - Vec2( 10.0f,10.0f ), // Upper left.
-		pos + Vec2( size.x + 10.0f,-10.0f ), // Upper right.
-		pos + size + Vec2( 10.0f,10.0f ), // Bottom right.
-		pos + Vec2( -10.0f,size.y + 10.0f ) // Bottom left.
+		Vec2( pos.x - 30.0f,pos.y - 30.0f ), // Upper left.
+		Vec2( pos.x + size.x + 30.0f,pos.y - 30.0f ), // Upper right.
+		Vec2( pos.x + size.x + 30.0f,pos.y + size.y + 30.0f ), // Bottom right.
+		Vec2( pos.x - 30.0f,pos.y + size.y + 30.0f ) // Bottom left.
 	};
 };

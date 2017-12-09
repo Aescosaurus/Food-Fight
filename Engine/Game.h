@@ -44,6 +44,7 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	bool TestLine( const Vec2& pos1,const Vec2& pos2 );
 	/********************************/
 private:
 	MainWindow& wnd;

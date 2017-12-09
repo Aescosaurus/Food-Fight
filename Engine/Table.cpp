@@ -5,7 +5,7 @@ const Surface Table::spr = { "Images/Table1.bmp" };
 
 Table::Table( const Vec2& pos )
 	:
-	size( 64.0f,32.0f ),
+	size( spr.GetWidth(),spr.GetHeight() ),
 	pos( pos ),
 	hitbox( spr.GetRect() )
 {

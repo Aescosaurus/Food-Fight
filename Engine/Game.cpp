@@ -28,7 +28,7 @@ Game::Game( MainWindow& wnd )
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
 	hotDogs.emplace_back( HotDog() );
-	tables.emplace_back( Table( { float( rng.NextInt( 0,400 ) ),float( rng.NextInt( 0,400 ) ) } ) );
+	tables.emplace_back( Table( { 400.0f,400.0f } ) );
 }
 
 void Game::Go()
@@ -111,21 +111,27 @@ void Game::UpdateModel()
 			// 	}
 			// }
 
-			if( t.GetRect().Covers( hd.GetPos(),hd.GetTarget(),Graphics::GetScreenRect() ) )
-			{
-				float distFromPlayer = 0.0f;
-				int closest = 0;
-				for( int i = 0; i < t.CountTargets(); ++i )
-				{
-					const Vec2 diff = { p.GetPos() - t.GetTarget( i ) };
-					if( diff.GetLengthSq() > distFromPlayer )
-					{
-						distFromPlayer = diff.GetLengthSq();
-						closest = i;
-					}
-				}
+			// if( t.GetRect().Covers( hd.GetPos(),hd.GetTarget(),Graphics::GetScreenRect() ) )
+			// {
+			// 	float distFromPlayer = 0.0f;
+			// 	int closest = 0;
+			// 	for( int i = 0; i < t.CountTargets(); ++i )
+			// 	{
+			// 		const Vec2 diff = { p.GetPos() - t.GetTarget( i ) };
+			// 		if( diff.GetLengthSq() > distFromPlayer )
+			// 		{
+			// 			distFromPlayer = diff.GetLengthSq();
+			// 			closest = i;
+			// 		}
+			// 	}
+			// 
+			// 	hd.Target( t.GetTarget( i ) );
+			// }
 
-				hd.Target( t.GetTarget( i ) );
+			if( t.GetRect().Covers( hd.GetPos(),p.GetPos(),Graphics::GetScreenRect() ) )
+			{
+				// TODO: Find closest targetable table corner and go to it.
+				hd.Target( t.GetTarget( 0 ) );
 			}
 		}
 
@@ -136,12 +142,35 @@ void Game::UpdateModel()
 	}
 }
 
+bool Game::TestLine( const Vec2& pos1,const Vec2& pos2 )
+{
+	const Vec2 delta = Vec2( pos2 - pos1 ).Normalize();
+	Vec2 curPos = pos1;
+	while( Graphics::GetScreenRect().Contains( curPos ) )
+	{
+		curPos += delta;
+		gfx.PutPixelSafe( int( curPos.x ),int( curPos.y ),Colors::Red );
+
+		if( curPos.x > pos2.x && curPos.y > pos2.y )
+		{
+			return false;
+		}
+		if( tables[0].GetRect().Contains( curPos ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void Game::ComposeFrame()
 {
 	// gfx.DrawRect( 0,0,Graphics::ScreenWidth,Graphics::ScreenHeight,Colors::Cyan );
 	for( const HotDog& hd : hotDogs )
 	{
 		hd.Draw( gfx );
+		gfx.DrawLine( int( hd.GetPos().x ),int( hd.GetPos().y ),int( hd.GetTarget().x ),int( hd.GetTarget().y ),Colors::Cyan );
 	}
 
 	for( const Table& t : tables )

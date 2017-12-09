@@ -331,6 +331,15 @@ void Graphics::PutPixel( int x,int y,Color c,float alpha )
 	PutPixel( x,y,c,unsigned char( alpha * 255 ) );
 }
 
+void Graphics::PutPixelSafe( int x,int y,Color c )
+{
+	if( x > 0 && x < ScreenWidth &&
+		y > 0 && y < ScreenHeight )
+	{
+		PutPixel( x,y,c );
+	}
+}
+
 void Graphics::PutPixel( int x,int y,Color c )
 {
 	assert( x >= 0 );
