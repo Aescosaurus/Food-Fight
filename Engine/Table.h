@@ -11,14 +11,22 @@ public:
 
 	void Draw( class Graphics& gfx ) const;
 
+	void Break();
+
 	const Rect& GetRect() const;
 	int CountTargets() const;
 	const Vec2& GetTarget( int num ) const;
+	// Finds closest target to pos, and returns offset num of list of that order.
+	const Vec2 GetClosestTarget( const Vec2& pos,int num );
+private:
+	void SortByHighest( Vec2* start,int max );
 private:
 	static const Surface spr;
+	static const Surface broken;
 	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
+	bool isBroken = false;
 	static constexpr int numTargets = 4;
 	const Vec2 targets[numTargets] =
 	{

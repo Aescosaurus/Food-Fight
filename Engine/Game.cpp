@@ -128,10 +128,18 @@ void Game::UpdateModel()
 			// 	hd.Target( t.GetTarget( i ) );
 			// }
 
-			if( t.GetRect().Covers( hd.GetPos(),p.GetPos(),Graphics::GetScreenRect() ) )
+			// TODO: Find closest targetable table corner and go to it.
+			// int nTarget = 0;
+			// hd.Target( p.GetPos() );
+			// while( t.GetRect().Covers( hd.GetPos(),p.GetPos(),Graphics::GetScreenRect() ) )
+			// {
+			// 	++nTarget;
+			// 	hd.Target( t.GetClosestTarget( p.GetPos(),nTarget ) );
+			// }
+
+			if( t.GetRect().IsOverlappingWith( hd.GetRect() ) )
 			{
-				// TODO: Find closest targetable table corner and go to it.
-				hd.Target( t.GetTarget( 0 ) );
+				t.Break();
 			}
 		}
 
