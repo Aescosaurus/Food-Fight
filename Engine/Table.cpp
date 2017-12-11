@@ -1,5 +1,6 @@
 #include "Table.h"
 #include "Graphics.h"
+#include "Random.h"
 
 const Surface Table::sprites[4] =
 {
@@ -18,9 +19,25 @@ Table::Table( const Vec2& pos )
 	hitbox.MoveTo( pos );
 }
 
+void Table::Update( Random& rng,float dt )
+{
+	if( rng.NextInt( 0,10 ) > 5 )
+	{
+		s = State::Normal;
+	}
+}
+
 void Table::Draw( Graphics& gfx ) const
 {
-	gfx.DrawSprite( int( pos.x ),int( pos.y ),sprites[int( sprIndex )] );
+	if( s == State::Hurt )
+	{
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),sprites[int( sprIndex )],Colors::White,Colors::Magenta );
+	}
+	else
+	{
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),sprites[int( sprIndex )] );
+	}
+
 	if( int( sprIndex ) < nSprites - 1 )
 	{
 		gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
@@ -29,11 +46,12 @@ void Table::Draw( Graphics& gfx ) const
 
 void Table::Hurt( float damage )
 {
-	++sprIndex;
+	sprIndex += damage;
 	if( int( sprIndex ) > nSprites - 1 )
 	{
 		hitbox.MoveTo( { float( Graphics::ScreenWidth ),float( Graphics::ScreenHeight ) } );
 	}
+	s = State::Hurt;
 }
 
 const Vec2& Table::GetPos() const

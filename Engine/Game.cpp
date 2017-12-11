@@ -51,6 +51,7 @@ void Game::UpdateModel()
 	p.Update( wnd.kbd,wnd.mouse,dt );
 	for( Table& t : tables )
 	{
+		t.Update( rng,dt );
 		if( t && t.GetRect().IsOverlappingWith( p.GetRect() ) )
 		{
 			p.MoveBack();
@@ -68,10 +69,11 @@ void Game::UpdateModel()
 		Bullet& b = bullets[i];
 		b.Update( dt );
 
-		for( const Table& t : tables )
+		for( Table& t : tables )
 		{
 			if( t && t.GetRect().IsOverlappingWith( b.GetRect() ) )
 			{
+				t.Hurt( 0.3f );
 				b.Kill();
 			}
 		}
@@ -103,7 +105,7 @@ void Game::UpdateModel()
 			if( t && t.GetRect().IsOverlappingWith( hd.GetRect() ) )
 			{
 				t.Hurt( 1.0f );
-				hd.MoveAwayFrom( t.GetPos() );
+				hd.BounceOffOf( t.GetPos() );
 			}
 		}
 

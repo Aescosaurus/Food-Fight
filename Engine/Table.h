@@ -6,9 +6,16 @@
 
 class Table
 {
+private:
+	enum class State
+	{
+		Normal,
+		Hurt
+	};
 public:
 	Table( const Vec2& pos );
 
+	void Update( class Random& rng,float dt );
 	void Draw( class Graphics& gfx ) const;
 
 	void Hurt( float damage );
@@ -23,4 +30,5 @@ private:
 	Vec2 pos;
 	Rect hitbox;
 	float sprIndex = 0;
+	State s = State::Normal;
 };
