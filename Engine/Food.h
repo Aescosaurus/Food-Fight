@@ -44,10 +44,9 @@ public:
 
 	void Hurt( int amount );
 	void Target( const Vec2& targetPos );
-	void MoveAwayFrom( const Vec2& pos );
+	void BounceOffOf( const Vec2& pos );
 
 	operator bool() const;
-	const Vec2& GetTarget() const;
 private:
 	static constexpr float speed = 30.5f;
 	static const Surface spr;

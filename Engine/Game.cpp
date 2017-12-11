@@ -41,12 +41,18 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if( wnd.kbd.KeyIsPressed( VK_CONTROL ) && wnd.kbd.KeyIsPressed( int( 'W' ) ) )
+	{
+		wnd.Kill();
+	}
+
 	const float dt = ft.Mark();
 
 	p.Update( wnd.kbd,wnd.mouse,dt );
 	for( Table& t : tables )
 	{
-		if( t.GetRect().IsOverlappingWith( p.GetRect() ) )
+		t.Update( rng,dt );
+		if( t && t.GetRect().IsOverlappingWith( p.GetRect() ) )
 		{
 			p.MoveBack();
 		}
@@ -63,10 +69,11 @@ void Game::UpdateModel()
 		Bullet& b = bullets[i];
 		b.Update( dt );
 
-		for( const Table& t : tables )
+		for( Table& t : tables )
 		{
-			if( t.GetRect().IsOverlappingWith( b.GetRect() ) )
+			if( t && t.GetRect().IsOverlappingWith( b.GetRect() ) )
 			{
+				t.Hurt( 0.3f );
 				b.Kill();
 			}
 		}
@@ -95,52 +102,10 @@ void Game::UpdateModel()
 
 		for( Table& t : tables )
 		{
-			// int nextTarget = 0;
-			// do
-			// {
-			// 	hd.Target( t.GetTarget( nextTarget ) );
-			// }
-			// while( !t.GetRect().Covers( hd.GetPos(),hd.GetTarget(),Graphics::GetScreenRect() ) &&
-			// 	nextTarget <= t.CountTargets() );
-
-			// for( int i = 0; i < t.CountTargets(); ++i )
-			// {
-			// 	if( t.GetRect().Covers( hd.GetPos(),hd.GetTarget(),Graphics::GetScreenRect() ) )
-			// 	{
-			// 		hd.Target( t.GetTarget( i ) );
-			// 	}
-			// }
-
-			// if( t.GetRect().Covers( hd.GetPos(),hd.GetTarget(),Graphics::GetScreenRect() ) )
-			// {
-			// 	float distFromPlayer = 0.0f;
-			// 	int closest = 0;
-			// 	for( int i = 0; i < t.CountTargets(); ++i )
-			// 	{
-			// 		const Vec2 diff = { p.GetPos() - t.GetTarget( i ) };
-			// 		if( diff.GetLengthSq() > distFromPlayer )
-			// 		{
-			// 			distFromPlayer = diff.GetLengthSq();
-			// 			closest = i;
-			// 		}
-			// 	}
-			// 
-			// 	hd.Target( t.GetTarget( i ) );
-			// }
-
-			// TODO: Find closest targetable table corner and go to it.
-			// int nTarget = 0;
-			// hd.Target( p.GetPos() );
-			// while( t.GetRect().Covers( hd.GetPos(),p.GetPos(),Graphics::GetScreenRect() ) )
-			// {
-			// 	++nTarget;
-			// 	hd.Target( t.GetClosestTarget( p.GetPos(),nTarget ) );
-			// }
-
-			if( t.GetRect().IsOverlappingWith( hd.GetRect() ) )
+			if( t && t.GetRect().IsOverlappingWith( hd.GetRect() ) )
 			{
-				t.Break();
-				hd.MoveAwayFrom( t.GetPos() );
+				t.Hurt( 1.0f );
+				hd.BounceOffOf( t.GetPos() );
 			}
 		}
 
@@ -151,40 +116,18 @@ void Game::UpdateModel()
 	}
 }
 
-bool Game::TestLine( const Vec2& pos1,const Vec2& pos2 )
-{
-	const Vec2 delta = Vec2( pos2 - pos1 ).Normalize();
-	Vec2 curPos = pos1;
-	while( Graphics::GetScreenRect().Contains( curPos ) )
-	{
-		curPos += delta;
-		gfx.PutPixelSafe( int( curPos.x ),int( curPos.y ),Colors::Red );
-
-		if( curPos.x > pos2.x && curPos.y > pos2.y )
-		{
-			return false;
-		}
-		if( tables[0].GetRect().Contains( curPos ) )
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
 void Game::ComposeFrame()
 {
 	// gfx.DrawRect( 0,0,Graphics::ScreenWidth,Graphics::ScreenHeight,Colors::Cyan );
-	for( const HotDog& hd : hotDogs )
-	{
-		hd.Draw( gfx );
-		gfx.DrawLine( int( hd.GetPos().x ),int( hd.GetPos().y ),int( hd.GetTarget().x ),int( hd.GetTarget().y ),Colors::Cyan );
-	}
 
 	for( const Table& t : tables )
 	{
 		t.Draw( gfx );
+	}
+
+	for( const HotDog& hd : hotDogs )
+	{
+		hd.Draw( gfx );
 	}
 
 	p.Draw( gfx );
