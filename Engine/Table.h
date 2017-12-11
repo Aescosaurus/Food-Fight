@@ -14,6 +14,8 @@ public:
 	void Break();
 
 	const Rect& GetRect() const;
+	const Vec2& GetPos() const;
+
 	int CountTargets() const;
 	const Vec2& GetTarget( int num ) const;
 	// Finds closest target to pos, and returns offset num of list of that order.
@@ -23,10 +25,13 @@ private:
 private:
 	static const Surface spr;
 	static const Surface broken;
+	static const Surface sprites[2];
 	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
 	bool isBroken = false;
+	int sprIndex = 0;
+	static constexpr int hitsToBreak = 1;
 	static constexpr int numTargets = 4;
 	const Vec2 targets[numTargets] =
 	{

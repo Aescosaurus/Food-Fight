@@ -140,6 +140,7 @@ void Game::UpdateModel()
 			if( t.GetRect().IsOverlappingWith( hd.GetRect() ) )
 			{
 				t.Break();
+				hd.MoveAwayFrom( t.GetPos() );
 			}
 		}
 

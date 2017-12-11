@@ -3,6 +3,7 @@
 
 const Surface Table::spr = { "Images/Table1.bmp" };
 const Surface Table::broken = { "Images/Table2.bmp" };
+const Surface Table::sprites[2] = { Surface( "Images/Table1.bmp" ),Surface( "Images/Table2.bmp" ) };
 
 Table::Table( const Vec2& pos )
 	:
@@ -15,26 +16,30 @@ Table::Table( const Vec2& pos )
 
 void Table::Draw( Graphics& gfx ) const
 {
-	if( !isBroken )
+	gfx.DrawSprite( int( pos.x ),int( pos.y ),sprites[sprIndex] );
+	if( sprIndex <= hitsToBreak )
 	{
-		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
 		gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
-	}
-	else
-	{
-		gfx.DrawSprite( int( pos.x ),int( pos.y ),broken );
 	}
 }
 
 void Table::Break()
 {
-	hitbox.MoveTo( { float( Graphics::ScreenWidth ),float( Graphics::ScreenHeight ) } );
-	isBroken = true;
+	++sprIndex;
+	if( sprIndex > hitsToBreak )
+	{
+		hitbox.MoveTo( { float( Graphics::ScreenWidth ),float( Graphics::ScreenHeight ) } );
+	}
 }
 
 const Rect& Table::GetRect() const
 {
 	return hitbox;
+}
+
+const Vec2& Table::GetPos() const
+{
+	return pos;
 }
 
 int Table::CountTargets() const
