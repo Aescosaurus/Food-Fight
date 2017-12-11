@@ -84,6 +84,11 @@ void Player::MoveBack()
 	hitbox.MoveTo( pos );
 }
 
+void Player::Hurt( int amount )
+{
+	hp -= amount;
+}
+
 const Vec2& Player::GetPos() const
 {
 	return pos;

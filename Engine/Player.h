@@ -17,6 +17,7 @@ public:
 
 	bool Fire();
 	void MoveBack();
+	void Hurt( int amount );
 
 	const Vec2& GetPos() const;
 	static const Vec2& GetSize();
@@ -30,4 +31,6 @@ private:
 	Vec2 vel;
 	int shotTimer = 0;
 	static constexpr int refireTime = 15;
+	static constexpr int maxHP = 10;
+	int hp = maxHP;
 };

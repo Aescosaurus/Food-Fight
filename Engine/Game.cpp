@@ -109,6 +109,13 @@ void Game::UpdateModel()
 			}
 		}
 
+		if( hd && hd.GetRect().IsOverlappingWith( p.GetRect() ) )
+		{
+			p.Hurt( 1 );
+			hd.Hurt( 1 );
+			hd.BounceOffOf( p.GetPos() );
+		}
+
 		if( !hd )
 		{
 			hotDogs.erase( hotDogs.begin() + i );
