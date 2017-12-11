@@ -26,7 +26,6 @@
 #include "Player.h"
 #include "TimeStep.h"
 #include "Random.h"
-#include "Enemy.h"
 #include <vector>
 #include "Food.h"
 #include "Table.h"
@@ -44,7 +43,6 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
-	bool TestLine( const Vec2& pos1,const Vec2& pos2 );
 	/********************************/
 private:
 	MainWindow& wnd;

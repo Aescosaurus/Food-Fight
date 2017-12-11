@@ -117,7 +117,7 @@ void HotDog::Draw( Graphics& gfx ) const
 	}
 
 	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
-	// gfx.DrawLine( int( pos.x ),int( pos.y ),int( target.x ),int( target.y ),Colors::Cyan );
+	gfx.DrawLine( int( pos.x ),int( pos.y ),int( target.x ),int( target.y ),Colors::Cyan );
 }
 
 void HotDog::Hurt( int amount )
@@ -140,9 +140,4 @@ void HotDog::MoveAwayFrom( const Vec2& pos_in )
 HotDog::operator bool() const
 {
 	return hp > 0;
-}
-
-const Vec2& HotDog::GetTarget() const
-{
-	return target;
 }
