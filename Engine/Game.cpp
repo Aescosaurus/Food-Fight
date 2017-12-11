@@ -137,7 +137,7 @@ void Game::UpdateModel()
 			// 	hd.Target( t.GetClosestTarget( p.GetPos(),nTarget ) );
 			// }
 
-			if( t.GetRect().IsOverlappingWith( hd.GetRect() ) )
+			if( t && t.GetRect().IsOverlappingWith( hd.GetRect() ) )
 			{
 				t.Break();
 				hd.MoveAwayFrom( t.GetPos() );
@@ -176,15 +176,16 @@ bool Game::TestLine( const Vec2& pos1,const Vec2& pos2 )
 void Game::ComposeFrame()
 {
 	// gfx.DrawRect( 0,0,Graphics::ScreenWidth,Graphics::ScreenHeight,Colors::Cyan );
-	for( const HotDog& hd : hotDogs )
-	{
-		hd.Draw( gfx );
-		gfx.DrawLine( int( hd.GetPos().x ),int( hd.GetPos().y ),int( hd.GetTarget().x ),int( hd.GetTarget().y ),Colors::Cyan );
-	}
 
 	for( const Table& t : tables )
 	{
 		t.Draw( gfx );
+	}
+
+	for( const HotDog& hd : hotDogs )
+	{
+		hd.Draw( gfx );
+		gfx.DrawLine( int( hd.GetPos().x ),int( hd.GetPos().y ),int( hd.GetTarget().x ),int( hd.GetTarget().y ),Colors::Cyan );
 	}
 
 	p.Draw( gfx );

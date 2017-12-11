@@ -15,6 +15,7 @@ public:
 
 	const Rect& GetRect() const;
 	const Vec2& GetPos() const;
+	operator bool() const;
 
 	int CountTargets() const;
 	const Vec2& GetTarget( int num ) const;
@@ -25,13 +26,13 @@ private:
 private:
 	static const Surface spr;
 	static const Surface broken;
-	static const Surface sprites[2];
+	static constexpr int nSprites = 3;
+	static const Surface sprites[nSprites];
 	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
 	bool isBroken = false;
 	int sprIndex = 0;
-	static constexpr int hitsToBreak = 1;
 	static constexpr int numTargets = 4;
 	const Vec2 targets[numTargets] =
 	{
