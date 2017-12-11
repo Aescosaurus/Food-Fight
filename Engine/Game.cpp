@@ -46,7 +46,7 @@ void Game::UpdateModel()
 	p.Update( wnd.kbd,wnd.mouse,dt );
 	for( Table& t : tables )
 	{
-		if( t.GetRect().IsOverlappingWith( p.GetRect() ) )
+		if( t && t.GetRect().IsOverlappingWith( p.GetRect() ) )
 		{
 			p.MoveBack();
 		}
@@ -65,7 +65,7 @@ void Game::UpdateModel()
 
 		for( const Table& t : tables )
 		{
-			if( t.GetRect().IsOverlappingWith( b.GetRect() ) )
+			if( t && t.GetRect().IsOverlappingWith( b.GetRect() ) )
 			{
 				b.Kill();
 			}
