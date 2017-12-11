@@ -131,6 +131,12 @@ void HotDog::Target( const Vec2& targetPos )
 	target = targetPos;
 }
 
+void HotDog::MoveAwayFrom( const Vec2& pos_in )
+{
+	const Vec2 moveAwayDir = ( pos_in - pos ).Normalize();
+	pos -= moveAwayDir * speed;
+}
+
 HotDog::operator bool() const
 {
 	return hp > 0;
