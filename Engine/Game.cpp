@@ -64,7 +64,7 @@ void Game::UpdateModel()
 			{ float( wnd.mouse.GetPosX() ),float( wnd.mouse.GetPosY() ) } ) );
 	}
 
-	for( int i = 0; i < bullets.size(); ++i )
+	for( size_t i = 0; i < bullets.size(); ++i )
 	{
 		Bullet& b = bullets[i];
 		b.Update( dt );
@@ -84,7 +84,7 @@ void Game::UpdateModel()
 		}
 	}
 
-	for( int i = 0; i < hotDogs.size(); ++i )
+	for( size_t i = 0; i < hotDogs.size(); ++i )
 	{
 		HotDog& hd = hotDogs[i];
 		hd.Update( dt,rng );
