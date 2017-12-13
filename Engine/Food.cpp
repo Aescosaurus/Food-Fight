@@ -81,18 +81,32 @@ HotDog& HotDog::operator=( const HotDog& other )
 
 void HotDog::Update( float dt,Random& rng )
 {
-	const int rngNum = rng.NextInt( 0,10 );
-	if( rngNum > 6 )
+	// const int rngNum = rng.NextInt( 0,10 );
+	// if( rngNum > 6 )
+	// {
+	// 	state = MoveState::Waiting;
+	// }
+	// else if( rngNum > 4 )
+	// {
+	// 	state = MoveState::Moving;
+	// }
+	// else
+	// {
+	// 	// State is still being hurt.
+	// }
+
+	++hitTimer;
+	if( hitTimer > unhitTime )
 	{
-		state = MoveState::Waiting;
-	}
-	else if( rngNum > 4 )
-	{
-		state = MoveState::Moving;
-	}
-	else
-	{
-		// State is still being hurt.
+		hitTimer = 0;
+		if( rng.NextInt( 0,10 ) > 5 )
+		{
+			state = MoveState::Moving;
+		}
+		else
+		{
+			state = MoveState::Waiting;
+		}
 	}
 
 	if( state == MoveState::Moving )

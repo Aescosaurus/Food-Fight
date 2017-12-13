@@ -21,6 +21,8 @@ protected:
 	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
+	int hitTimer = 0;
+	static constexpr int unhitTime = 2;
 private:
 };
 

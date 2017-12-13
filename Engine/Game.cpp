@@ -49,6 +49,13 @@ void Game::UpdateModel()
 	const float dt = ft.Mark();
 
 	p.Update( wnd.kbd,wnd.mouse,dt );
+
+	if( wnd.mouse.LeftIsPressed() && p.Fire() )
+	{
+		bullets.emplace_back( Bullet( p.GetPos() + Player::GetSize() / 2 - Bullet::GetSize() / 2,
+		{ float( wnd.mouse.GetPosX() ),float( wnd.mouse.GetPosY() ) } ) );
+	}
+
 	for( Table& t : tables )
 	{
 		t.Update( rng,dt );
@@ -56,12 +63,6 @@ void Game::UpdateModel()
 		{
 			p.MoveBack();
 		}
-	}
-
-	if( wnd.mouse.LeftIsPressed() && p.Fire() )
-	{
-		bullets.emplace_back( Bullet( p.GetPos() + Player::GetSize() / 2 - Bullet::GetSize() / 2,
-			{ float( wnd.mouse.GetPosX() ),float( wnd.mouse.GetPosY() ) } ) );
 	}
 
 	for( size_t i = 0; i < bullets.size(); ++i )
