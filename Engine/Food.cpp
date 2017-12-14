@@ -156,3 +156,32 @@ HotDog::operator bool() const
 {
 	return hp > 0;
 }
+
+Meatball::Meatball( const Vec2& pos )
+	:
+	Food( pos,{ 55.0f,55.0f } ),
+	target( pos )
+{
+}
+
+void Meatball::Update( float dt )
+{
+	const Vec2 diff = target - pos;
+	pos += diff.GetNormalized() * speed * dt;
+
+	Food::Update( dt );
+}
+
+void Meatball::Draw( Graphics& gfx ) const
+{
+	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
+	gfx.DrawHitbox( hitbox,Colors::MakeRGB( 255,160,0 ),true );
+}
+
+void Meatball::Target( const Vec2& targetPos )
+{
+	if( ( target - pos ).GetLengthSq() < speed )
+	{
+		target = targetPos;
+	}
+}

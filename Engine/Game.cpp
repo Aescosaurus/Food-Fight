@@ -28,6 +28,7 @@ Game::Game( MainWindow& wnd )
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
 	hotDogs.emplace_back( HotDog() );
+	meatballs.emplace_back( Meatball( { 50.0f,50.0f } ) );
 	tables.emplace_back( Table( { 400.0f,400.0f } ) );
 }
 
@@ -122,6 +123,15 @@ void Game::UpdateModel()
 			hotDogs.erase( hotDogs.begin() + i );
 		}
 	}
+
+	for( size_t i = 0; i < meatballs.size(); ++i )
+	{
+		Meatball& mb = meatballs[i];
+
+		mb.Update( dt );
+
+		mb.Target( p.GetPos() );
+	}
 }
 
 void Game::ComposeFrame()
@@ -136,6 +146,11 @@ void Game::ComposeFrame()
 	for( const HotDog& hd : hotDogs )
 	{
 		hd.Draw( gfx );
+	}
+
+	for( const Meatball& mb : meatballs )
+	{
+		mb.Draw( gfx );
 	}
 
 	p.Draw( gfx );

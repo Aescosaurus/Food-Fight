@@ -57,3 +57,17 @@ private:
 	static constexpr int maxHP = 10;
 	int hp = maxHP;
 };
+
+class Meatball : public Food
+{
+public:
+	Meatball( const Vec2& pos );
+
+	void Update( float dt );
+	void Draw( class Graphics& gfx ) const;
+
+	void Target( const Vec2& targetPos );
+private:
+	static constexpr float speed = 50.0f;
+	Vec2 target;
+};
