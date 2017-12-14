@@ -68,6 +68,8 @@ public:
 
 	void Target( const Vec2& targetPos );
 private:
-	static constexpr float speed = 50.0f;
+	static constexpr float speed = 75.0f;
 	Vec2 target;
+	static constexpr int waitTime = 10;
+	int moveTimer = 0;
 };

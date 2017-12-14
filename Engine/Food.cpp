@@ -182,6 +182,11 @@ void Meatball::Target( const Vec2& targetPos )
 {
 	if( ( target - pos ).GetLengthSq() < speed )
 	{
-		target = targetPos;
+		++moveTimer;
+		if( moveTimer > waitTime )
+		{
+			moveTimer = 0;
+			target = targetPos;
+		}
 	}
 }
