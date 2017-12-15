@@ -31,4 +31,6 @@ private:
 	Rect hitbox;
 	float sprIndex = 0;
 	State s = State::Normal;
+	int hitTimer = 0;
+	static constexpr int unhitTime = 2;
 };

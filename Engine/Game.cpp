@@ -28,6 +28,7 @@ Game::Game( MainWindow& wnd )
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
 	hotDogs.emplace_back( HotDog() );
+	meatballs.emplace_back( Meatball( { 50.0f,50.0f } ) );
 	tables.emplace_back( Table( { 400.0f,400.0f } ) );
 }
 
@@ -49,6 +50,13 @@ void Game::UpdateModel()
 	const float dt = ft.Mark();
 
 	p.Update( wnd.kbd,wnd.mouse,dt );
+
+	if( wnd.mouse.LeftIsPressed() && p.Fire() )
+	{
+		bullets.emplace_back( Bullet( p.GetPos() + Player::GetSize() / 2 - Bullet::GetSize() / 2,
+		{ float( wnd.mouse.GetPosX() ),float( wnd.mouse.GetPosY() ) } ) );
+	}
+
 	for( Table& t : tables )
 	{
 		t.Update( rng,dt );
@@ -58,13 +66,7 @@ void Game::UpdateModel()
 		}
 	}
 
-	if( wnd.mouse.LeftIsPressed() && p.Fire() )
-	{
-		bullets.emplace_back( Bullet( p.GetPos() + Player::GetSize() / 2 - Bullet::GetSize() / 2,
-			{ float( wnd.mouse.GetPosX() ),float( wnd.mouse.GetPosY() ) } ) );
-	}
-
-	for( int i = 0; i < bullets.size(); ++i )
+	for( size_t i = 0; i < bullets.size(); ++i )
 	{
 		Bullet& b = bullets[i];
 		b.Update( dt );
@@ -84,7 +86,7 @@ void Game::UpdateModel()
 		}
 	}
 
-	for( int i = 0; i < hotDogs.size(); ++i )
+	for( size_t i = 0; i < hotDogs.size(); ++i )
 	{
 		HotDog& hd = hotDogs[i];
 		hd.Update( dt,rng );
@@ -109,10 +111,26 @@ void Game::UpdateModel()
 			}
 		}
 
+		if( hd && hd.GetRect().IsOverlappingWith( p.GetRect() ) )
+		{
+			p.Hurt( 1 );
+			hd.Hurt( 1 );
+			hd.BounceOffOf( p.GetPos() );
+		}
+
 		if( !hd )
 		{
 			hotDogs.erase( hotDogs.begin() + i );
 		}
+	}
+
+	for( size_t i = 0; i < meatballs.size(); ++i )
+	{
+		Meatball& mb = meatballs[i];
+
+		mb.Update( dt );
+
+		mb.Target( p.GetPos() );
 	}
 }
 
@@ -128,6 +146,11 @@ void Game::ComposeFrame()
 	for( const HotDog& hd : hotDogs )
 	{
 		hd.Draw( gfx );
+	}
+
+	for( const Meatball& mb : meatballs )
+	{
+		mb.Draw( gfx );
 	}
 
 	p.Draw( gfx );

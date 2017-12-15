@@ -27,7 +27,7 @@
 #include "TimeStep.h"
 #include "Random.h"
 #include <vector>
-#include "Food.h"
+#include "Food.h" // All enemies!
 #include "Table.h"
 #include "Bullet.h"
 
@@ -53,6 +53,7 @@ private:
 	Random rng;
 	Player p;
 	std::vector<HotDog> hotDogs;
+	std::vector<Meatball> meatballs;
 	std::vector<Table> tables;
 	std::vector<Bullet> bullets;
 	/********************************/

@@ -56,7 +56,7 @@ void Player::Update( const Keyboard& kbd,const Mouse& ms,float dt )
 
 	if( shotTimer <= refireTime )
 	{
-		++shotTimer;
+		shotTimer += dt * refireTime * 2.0f;
 	}
 }
 
@@ -73,7 +73,7 @@ bool Player::Fire()
 	const bool canFire = ( shotTimer >= refireTime );
 	if( canFire )
 	{
-		shotTimer = 0;
+		shotTimer = 0.0f;
 	}
 	return canFire;
 }
@@ -82,6 +82,11 @@ void Player::MoveBack()
 {
 	pos -= vel;
 	hitbox.MoveTo( pos );
+}
+
+void Player::Hurt( int amount )
+{
+	hp -= amount;
 }
 
 const Vec2& Player::GetPos() const

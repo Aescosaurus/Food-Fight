@@ -21,6 +21,8 @@ protected:
 	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
+	int hitTimer = 0;
+	static constexpr int unhitTime = 2;
 private:
 };
 
@@ -54,4 +56,20 @@ private:
 	MoveState state = MoveState::Waiting;
 	static constexpr int maxHP = 10;
 	int hp = maxHP;
+};
+
+class Meatball : public Food
+{
+public:
+	Meatball( const Vec2& pos );
+
+	void Update( float dt );
+	void Draw( class Graphics& gfx ) const;
+
+	void Target( const Vec2& targetPos );
+private:
+	static constexpr float speed = 75.0f;
+	Vec2 target;
+	static constexpr int waitTime = 10;
+	int moveTimer = 0;
 };

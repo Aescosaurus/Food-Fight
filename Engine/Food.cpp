@@ -81,18 +81,32 @@ HotDog& HotDog::operator=( const HotDog& other )
 
 void HotDog::Update( float dt,Random& rng )
 {
-	const int rngNum = rng.NextInt( 0,10 );
-	if( rngNum > 6 )
+	// const int rngNum = rng.NextInt( 0,10 );
+	// if( rngNum > 6 )
+	// {
+	// 	state = MoveState::Waiting;
+	// }
+	// else if( rngNum > 4 )
+	// {
+	// 	state = MoveState::Moving;
+	// }
+	// else
+	// {
+	// 	// State is still being hurt.
+	// }
+
+	++hitTimer;
+	if( hitTimer > unhitTime )
 	{
-		state = MoveState::Waiting;
-	}
-	else if( rngNum > 4 )
-	{
-		state = MoveState::Moving;
-	}
-	else
-	{
-		// State is still being hurt.
+		hitTimer = 0;
+		if( rng.NextInt( 0,10 ) > 5 )
+		{
+			state = MoveState::Moving;
+		}
+		else
+		{
+			state = MoveState::Waiting;
+		}
 	}
 
 	if( state == MoveState::Moving )
@@ -141,4 +155,38 @@ void HotDog::BounceOffOf( const Vec2& pos_in )
 HotDog::operator bool() const
 {
 	return hp > 0;
+}
+
+Meatball::Meatball( const Vec2& pos )
+	:
+	Food( pos,{ 55.0f,55.0f } ),
+	target( pos )
+{
+}
+
+void Meatball::Update( float dt )
+{
+	const Vec2 diff = target - pos;
+	pos += diff.GetNormalized() * speed * dt;
+
+	Food::Update( dt );
+}
+
+void Meatball::Draw( Graphics& gfx ) const
+{
+	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
+	gfx.DrawHitbox( hitbox,Colors::MakeRGB( 255,160,0 ),true );
+}
+
+void Meatball::Target( const Vec2& targetPos )
+{
+	if( ( target - pos ).GetLengthSq() < speed )
+	{
+		++moveTimer;
+		if( moveTimer > waitTime )
+		{
+			moveTimer = 0;
+			target = targetPos;
+		}
+	}
 }

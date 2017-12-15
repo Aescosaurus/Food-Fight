@@ -21,8 +21,11 @@ Table::Table( const Vec2& pos )
 
 void Table::Update( Random& rng,float dt )
 {
-	if( rng.NextInt( 0,10 ) > 5 )
+	++hitTimer;
+	// if( rng.NextInt( 0,10 ) > 5 )
+	if( hitTimer > unhitTime )
 	{
+		hitTimer = 0;
 		s = State::Normal;
 	}
 }
