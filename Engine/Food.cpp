@@ -181,18 +181,45 @@ Meatball& Meatball::operator=( const Meatball& other )
 	return *this;
 }
 
-void Meatball::Update( float dt )
+void Meatball::Update( Random& rng,float dt )
 {
-	const Vec2 diff = target - pos;
-	pos += diff.GetNormalized() * speed * dt;
+	++hitTimer;
+	if( hitTimer > unhitTime )
+	{
+		hitTimer = 0;
+		if( rng.NextInt( 0,10 ) > 5 )
+		{
+			state = MoveState::Moving;
+		}
+		else
+		{
+			state = MoveState::Waiting;
+		}
+	}
+
+	if( state == MoveState::Moving )
+	{
+		const Vec2 diff = target - pos;
+		pos += diff.GetNormalized() * speed * dt;
+	}
 
 	Food::Update( dt );
 }
 
 void Meatball::Draw( Graphics& gfx ) const
 {
-	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
+	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
+	if( state == MoveState::Hurt )
+	{
+		gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::White );
+	}
+	else
+	{
+		gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
+	}
+
 	gfx.DrawHitbox( hitbox,Colors::MakeRGB( 255,160,0 ),true );
+	gfx.DrawLine( int( pos.x ),int( pos.y ),int( target.x ),int( target.y ),Colors::Cyan );
 }
 
 void Meatball::Target( const Vec2& targetPos )
@@ -211,6 +238,7 @@ void Meatball::Target( const Vec2& targetPos )
 void Meatball::Hurt( int damage )
 {
 	hp -= damage;
+	state = MoveState::Hurt;
 }
 
 bool Meatball::IsAlive() const

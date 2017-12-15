@@ -60,13 +60,20 @@ private:
 
 class Meatball : public Food
 {
+private:
+	enum class MoveState
+	{
+		Moving,
+		Waiting,
+		Hurt
+	};
 public:
 	Meatball( const Vec2& pos );
 
 	Meatball( const Meatball& other );
 	Meatball& operator=( const Meatball& other );
 
-	void Update( float dt );
+	void Update( class Random& rng,float dt );
 	void Draw( class Graphics& gfx ) const;
 
 	void Target( const Vec2& targetPos );
@@ -80,4 +87,5 @@ private:
 	int moveTimer = 0;
 	static constexpr int maxHP = 15;
 	int hp = maxHP;
+	MoveState state = MoveState::Waiting;
 };

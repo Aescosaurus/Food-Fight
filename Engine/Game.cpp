@@ -128,7 +128,7 @@ void Game::UpdateModel()
 	{
 		Meatball& mb = meatballs[i];
 
-		mb.Update( dt );
+		mb.Update( rng,dt );
 
 		mb.Target( p.GetPos() );
 
