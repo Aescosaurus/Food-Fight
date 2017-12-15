@@ -63,13 +63,21 @@ class Meatball : public Food
 public:
 	Meatball( const Vec2& pos );
 
+	Meatball( const Meatball& other );
+	Meatball& operator=( const Meatball& other );
+
 	void Update( float dt );
 	void Draw( class Graphics& gfx ) const;
 
 	void Target( const Vec2& targetPos );
+	void Hurt( int damage );
+
+	bool IsAlive() const;
 private:
 	static constexpr float speed = 75.0f;
 	Vec2 target;
 	static constexpr int waitTime = 10;
 	int moveTimer = 0;
+	static constexpr int maxHP = 15;
+	int hp = maxHP;
 };

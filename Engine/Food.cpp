@@ -73,8 +73,10 @@ HotDog::HotDog( const HotDog& other )
 
 HotDog& HotDog::operator=( const HotDog& other )
 {
+	pos = other.pos;
 	target = other.target;
 	hitbox = other.hitbox;
+	hp = other.hp;
 
 	return *this;
 }
@@ -164,6 +166,21 @@ Meatball::Meatball( const Vec2& pos )
 {
 }
 
+Meatball::Meatball( const Meatball& other )
+{
+	*this = other;
+}
+
+Meatball& Meatball::operator=( const Meatball& other )
+{
+	pos = other.pos;
+	target = other.target;
+	hitbox = other.hitbox;
+	hp = other.hp;
+
+	return *this;
+}
+
 void Meatball::Update( float dt )
 {
 	const Vec2 diff = target - pos;
@@ -189,4 +206,14 @@ void Meatball::Target( const Vec2& targetPos )
 			target = targetPos;
 		}
 	}
+}
+
+void Meatball::Hurt( int damage )
+{
+	hp -= damage;
+}
+
+bool Meatball::IsAlive() const
+{
+	return hp > 0;
 }

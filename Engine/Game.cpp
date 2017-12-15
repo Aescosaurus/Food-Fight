@@ -131,6 +131,20 @@ void Game::UpdateModel()
 		mb.Update( dt );
 
 		mb.Target( p.GetPos() );
+
+		for( Bullet& b : bullets )
+		{
+			if( mb.GetRect().IsOverlappingWith( b.GetRect() ) )
+			{
+				b.Kill();
+				mb.Hurt( 1 );
+			}
+		}
+
+		if( !mb.IsAlive() )
+		{
+			meatballs.erase( meatballs.begin() + i );
+		}
 	}
 }
 
