@@ -5,21 +5,12 @@
 #include "Table.h"
 
 const Surface HotDog::spr = Surface( "Images/HotDog.bmp" );
+const Surface Meatball::spr = Surface{ "Images/Meatball.bmp" };
 
 Food::Food()
 	:
-	size( 50.0f,50.0f ),
-	pos( 0.0f,0.0f ),
-	hitbox( pos,pos + size )
+	pos( 0.0f,0.0f )
 {
-}
-
-Food::Food( Random& rng )
-	:
-	Food()
-{
-	pos.x = float( rng.NextInt( int( size.x ),Graphics::ScreenWidth - int( size.x ) ) );
-	pos.y = float( rng.NextInt( int( size.y ),Graphics::ScreenHeight - int( size.y ) ) );
 }
 
 Food::Food( const Vec2& pos )
@@ -29,14 +20,6 @@ Food::Food( const Vec2& pos )
 	this->pos = pos;
 }
 
-Food::Food( const Vec2& pos,const Vec2& size )
-	:
-	size( size ),
-	pos( pos ),
-	hitbox( pos,pos + size )
-{
-}
-
 void Food::Update( float dt )
 {
 	hitbox.MoveTo( pos );
@@ -44,7 +27,7 @@ void Food::Update( float dt )
 
 void Food::Draw( Graphics& gfx ) const
 {
-	gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Magenta );
+	gfx.DrawRect( int( pos.x ),int( pos.y ),50,50,Colors::Magenta );
 }
 
 const Vec2& Food::GetPos() const
@@ -71,7 +54,7 @@ void Food::RandomizeState( Random& rng )
 
 HotDog::HotDog()
 	:
-	Food( { 0.0f,0.0f },{ 30.0f,70.0f } )
+	Food( { 0.0f,0.0f } )
 {
 	target = { 0.0f,0.0f };
 	hitbox = spr.GetRect();
@@ -182,10 +165,11 @@ HotDog::operator bool() const
 
 Meatball::Meatball( const Vec2& pos )
 	:
-	Food( pos,{ 55.0f,55.0f } ),
+	Food( pos ),
 	target( pos ),
 	vel( speed,speed )
 {
+	hitbox = spr.GetRect();
 }
 
 Meatball::Meatball( const Meatball& other )
@@ -209,25 +193,20 @@ void Meatball::Update( Random& rng,float dt )
 	if( hitTimer > unhitTime )
 	{
 		hitTimer = 0;
-		// state = MoveState::Moving;
+		state = MoveState::Moving;
 	}
-
-	// if( Vec2{ target - pos }.GetLengthSq() < vel.GetLengthSq() )
-	// {
-	// 	state = MoveState::Waiting;
-	// }
 
 	const Vec2 lastMoveAmount = vel.GetNormalized() * speed * dt;
 	pos += lastMoveAmount;
 
-	if( hitbox.GetExpanded( 5.0f ).IsContainedBy( Graphics::GetScreenRect() ) )
+	if( hitbox.GetExpanded( 5.5f ).IsContainedBy( Graphics::GetScreenRect() ) )
 	{
 		canRetarget = false;
 	}
 	else
 	{
 		canRetarget = true;
-		pos -= lastMoveAmount * 20.0f;
+		pos -= lastMoveAmount * 5.5f;
 		vel = -vel;
 	}
 
@@ -237,13 +216,14 @@ void Meatball::Update( Random& rng,float dt )
 void Meatball::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
+
 	if( state == MoveState::Hurting )
 	{
-		gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::White );
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta,( vel.x < 0.0f ) );
 	}
 	else
 	{
-		gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::Red );
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::Magenta,( vel.x < 0.0f ) );
 	}
 
 	gfx.DrawHitbox( hitbox,Colors::MakeRGB( 255,160,0 ),true );
@@ -252,17 +232,10 @@ void Meatball::Draw( Graphics& gfx ) const
 
 void Meatball::Target( const Vec2& targetPos )
 {
-	// if( Vec2{ target - pos }.GetLengthSq() < vel.GetLengthSq() )
-	// if( state == MoveState::Waiting )
+	if( canRetarget )
 	{
-		// ++moveTimer;
-		// if( moveTimer > waitTime )
-		if( canRetarget )
-		{
-			// moveTimer = 0;
-			target = targetPos;
-			vel = target - pos;
-		}
+		target = targetPos;
+		vel = target - pos;
 	}
 }
 

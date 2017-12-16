@@ -15,9 +15,7 @@ protected:
 	};
 public:
 	Food();
-	Food( class Random& rng );
 	Food( const Vec2& pos );
-	Food( const Vec2& pos,const Vec2& size );
 
 	void Update( float dt );
 	void Draw( class Graphics& gfx ) const;
@@ -27,10 +25,9 @@ public:
 protected:
 	void RandomizeState( class Random& rng );
 protected:
-	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
-	static constexpr int unhitTime = 2;
+	static constexpr int unhitTime = 3;
 	int hitTimer = 0;
 	MoveState state = MoveState::Waiting;
 private:
@@ -76,6 +73,7 @@ public:
 
 	bool IsAlive() const;
 private:
+	static const Surface spr;
 	static constexpr float speed = 220.5f;
 	Vec2 target;
 	Vec2 vel;
