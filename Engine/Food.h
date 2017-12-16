@@ -6,6 +6,13 @@
 
 class Food
 {
+protected:
+	enum class MoveState
+	{
+		Moving,
+		Waiting,
+		Hurting
+	};
 public:
 	Food();
 	Food( class Random& rng );
@@ -18,23 +25,19 @@ public:
 	const Vec2& GetPos() const;
 	const Rect& GetRect() const;
 protected:
+	void RandomizeState( class Random& rng );
+protected:
 	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
 	int hitTimer = 0;
 	static constexpr int unhitTime = 2;
+	MoveState state = MoveState::Waiting;
 private:
 };
 
 class HotDog : public Food
 {
-private:
-	enum class MoveState
-	{
-		Moving,
-		Waiting,
-		Hurt
-	};
 public:
 	HotDog();
 	
@@ -53,20 +56,12 @@ private:
 	static constexpr float speed = 30.5f;
 	static const Surface spr;
 	Vec2 target;
-	MoveState state = MoveState::Waiting;
 	static constexpr int maxHP = 10;
 	int hp = maxHP;
 };
 
 class Meatball : public Food
 {
-private:
-	enum class MoveState
-	{
-		Moving,
-		Waiting,
-		Hurt
-	};
 public:
 	Meatball( const Vec2& pos );
 
@@ -81,13 +76,11 @@ public:
 
 	bool IsAlive() const;
 private:
-	void RandomizeState( class Random& rng );
-private:
 	static constexpr float speed = 75.0f;
 	Vec2 target;
+	Vec2 lastMoveAmount;
 	static constexpr int waitTime = 10;
-	int moveTimer = 0;
+	int moveTimer = waitTime;
 	static constexpr int maxHP = 15;
 	int hp = maxHP;
-	MoveState state = MoveState::Waiting;
 };

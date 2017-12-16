@@ -57,6 +57,18 @@ const Rect& Food::GetRect() const
 	return hitbox;
 }
 
+void Food::RandomizeState( Random& rng )
+{
+	if( rng.NextInt( 0,10 ) > 5 )
+	{
+		state = MoveState::Moving;
+	}
+	else
+	{
+		state = MoveState::Waiting;
+	}
+}
+
 HotDog::HotDog()
 	:
 	Food( { 0.0f,0.0f },{ 30.0f,70.0f } )
@@ -101,14 +113,7 @@ void HotDog::Update( Random& rng,float dt )
 	if( hitTimer > unhitTime )
 	{
 		hitTimer = 0;
-		if( rng.NextInt( 0,10 ) > 5 )
-		{
-			state = MoveState::Moving;
-		}
-		else
-		{
-			state = MoveState::Waiting;
-		}
+		RandomizeState( rng );
 	}
 
 	if( state == MoveState::Moving )
@@ -139,7 +144,7 @@ void HotDog::Draw( Graphics& gfx ) const
 	// 	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta );
 	// }
 
-	if( state != MoveState::Hurt )
+	if( state != MoveState::Hurting )
 	{
 		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::Magenta,( target.x < pos.x ) );
 	}
@@ -155,7 +160,7 @@ void HotDog::Draw( Graphics& gfx ) const
 void HotDog::Hurt( int amount )
 {
 	hp -= amount;
-	state = MoveState::Hurt;
+	state = MoveState::Hurting;
 }
 
 void HotDog::Target( const Vec2& targetPos )
@@ -165,7 +170,7 @@ void HotDog::Target( const Vec2& targetPos )
 
 void HotDog::BounceOffOf( const Vec2& pos_in )
 {
-	state = MoveState::Hurt;
+	state = MoveState::Hurting;
 	const Vec2 moveAwayDir = ( pos_in - pos ).Normalize();
 	pos -= moveAwayDir * speed;
 }
@@ -203,18 +208,14 @@ void Meatball::Update( Random& rng,float dt )
 	if( hitTimer > unhitTime )
 	{
 		hitTimer = 0;
-		RandomizeState( rng );
-	}
-
-	if( state != MoveState::Hurt )
-	{
-		RandomizeState( rng );
+		state = MoveState::Moving;
 	}
 
 	if( state == MoveState::Moving )
 	{
 		const Vec2 diff = target - pos;
-		pos += diff.GetNormalized() * speed * dt;
+		lastMoveAmount = diff.GetNormalized() * speed * dt;
+		pos += lastMoveAmount;
 	}
 
 	Food::Update( dt );
@@ -223,7 +224,7 @@ void Meatball::Update( Random& rng,float dt )
 void Meatball::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
-	if( state == MoveState::Hurt )
+	if( state == MoveState::Hurting )
 	{
 		gfx.DrawRect( int( pos.x ),int( pos.y ),int( size.x ),int( size.y ),Colors::White );
 	}
@@ -238,7 +239,7 @@ void Meatball::Draw( Graphics& gfx ) const
 
 void Meatball::Target( const Vec2& targetPos )
 {
-	if( ( target - pos ).GetLengthSq() < speed )
+	if( Vec2{ target - pos }.GetLengthSq() < lastMoveAmount.GetLengthSq() )
 	{
 		++moveTimer;
 		if( moveTimer > waitTime )
@@ -252,22 +253,10 @@ void Meatball::Target( const Vec2& targetPos )
 void Meatball::Hurt( int damage )
 {
 	hp -= damage;
-	state = MoveState::Hurt;
+	state = MoveState::Hurting;
 }
 
 bool Meatball::IsAlive() const
 {
 	return hp > 0;
-}
-
-void Meatball::RandomizeState( Random& rng )
-{
-	if( rng.NextInt( 0,10 ) > 5 )
-	{
-		state = MoveState::Moving;
-	}
-	else
-	{
-		state = MoveState::Waiting;
-	}
 }
