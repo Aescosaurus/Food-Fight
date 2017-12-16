@@ -30,8 +30,8 @@ protected:
 	const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
-	int hitTimer = 0;
 	static constexpr int unhitTime = 2;
+	int hitTimer = 0;
 	MoveState state = MoveState::Waiting;
 private:
 };
@@ -76,9 +76,10 @@ public:
 
 	bool IsAlive() const;
 private:
-	static constexpr float speed = 75.0f;
+	static constexpr float speed = 220.5f;
 	Vec2 target;
-	Vec2 lastMoveAmount;
+	Vec2 vel;
+	bool canRetarget = true;
 	static constexpr int waitTime = 10;
 	int moveTimer = waitTime;
 	static constexpr int maxHP = 15;

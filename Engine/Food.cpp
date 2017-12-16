@@ -183,7 +183,8 @@ HotDog::operator bool() const
 Meatball::Meatball( const Vec2& pos )
 	:
 	Food( pos,{ 55.0f,55.0f } ),
-	target( pos )
+	target( pos ),
+	vel( speed,speed )
 {
 }
 
@@ -208,14 +209,26 @@ void Meatball::Update( Random& rng,float dt )
 	if( hitTimer > unhitTime )
 	{
 		hitTimer = 0;
-		state = MoveState::Moving;
+		// state = MoveState::Moving;
 	}
 
-	if( state == MoveState::Moving )
+	// if( Vec2{ target - pos }.GetLengthSq() < vel.GetLengthSq() )
+	// {
+	// 	state = MoveState::Waiting;
+	// }
+
+	const Vec2 lastMoveAmount = vel.GetNormalized() * speed * dt;
+	pos += lastMoveAmount;
+
+	if( hitbox.GetExpanded( 5.0f ).IsContainedBy( Graphics::GetScreenRect() ) )
 	{
-		const Vec2 diff = target - pos;
-		lastMoveAmount = diff.GetNormalized() * speed * dt;
-		pos += lastMoveAmount;
+		canRetarget = false;
+	}
+	else
+	{
+		canRetarget = true;
+		pos -= lastMoveAmount * 20.0f;
+		vel = -vel;
 	}
 
 	Food::Update( dt );
@@ -239,13 +252,16 @@ void Meatball::Draw( Graphics& gfx ) const
 
 void Meatball::Target( const Vec2& targetPos )
 {
-	if( Vec2{ target - pos }.GetLengthSq() < lastMoveAmount.GetLengthSq() )
+	// if( Vec2{ target - pos }.GetLengthSq() < vel.GetLengthSq() )
+	// if( state == MoveState::Waiting )
 	{
-		++moveTimer;
-		if( moveTimer > waitTime )
+		// ++moveTimer;
+		// if( moveTimer > waitTime )
+		if( canRetarget )
 		{
-			moveTimer = 0;
+			// moveTimer = 0;
 			target = targetPos;
+			vel = target - pos;
 		}
 	}
 }
