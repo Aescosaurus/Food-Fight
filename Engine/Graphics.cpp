@@ -544,17 +544,17 @@ void Graphics::DrawSpriteNonChroma( int x,int y,Rect srcRect,const Rect& clip,co
 	}
 }
 
-void Graphics::DrawSprite( int x,int y,const Surface& s,Color chroma )
+void Graphics::DrawSprite( int x,int y,const Surface& s,Color chroma,bool reversed )
 {
-	DrawSprite( x,y,s.GetRect(),s,chroma );
+	DrawSprite( x,y,s.GetRect(),s,chroma,reversed );
 }
 
-void Graphics::DrawSprite( int x,int y,const Rect& srcRect,const Surface& s,Color chroma )
+void Graphics::DrawSprite( int x,int y,const Rect& srcRect,const Surface& s,Color chroma,bool reversed )
 {
-	DrawSprite( x,y,srcRect,GetScreenRect(),s,chroma );
+	DrawSprite( x,y,srcRect,GetScreenRect(),s,chroma,reversed );
 }
 
-void Graphics::DrawSprite( int x,int y,Rect srcRect,const Rect& clip,const Surface& s,Color chroma )
+void Graphics::DrawSprite( int x,int y,Rect srcRect,const Rect& clip,const Surface& s,Color chroma,bool reversed )
 {
 	assert( srcRect.left >= 0 );
 	assert( srcRect.right <= s.GetWidth() );
@@ -578,20 +578,37 @@ void Graphics::DrawSprite( int x,int y,Rect srcRect,const Rect& clip,const Surfa
 	{
 		srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
 	}
-	for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
+	if( !reversed )
 	{
-		for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
+		for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
 		{
-			const Color srcPixel = s.GetPixel( sx,sy );
-			if( srcPixel != chroma )
+			for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
 			{
-				PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),srcPixel );
+				const Color srcPixel = s.GetPixel( sx,sy );
+				if( srcPixel != chroma )
+				{
+					PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),srcPixel );
+				}
+			}
+		}
+	}
+	else
+	{
+		for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
+		{
+			for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
+			{
+				const Color srcPixel = s.GetPixel( int( srcRect.right ) - ( sx + 1 ),sy );
+				if( srcPixel != chroma )
+				{
+					PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),srcPixel );
+				}
 			}
 		}
 	}
 }
 
-void Graphics::DrawSprite( int x,int y,const Surface& s,Color overlay,Color chroma )
+void Graphics::DrawSprite( int x,int y,const Surface& s,Color overlay,Color chroma,bool reversed )
 {
 	Rect srcRect = s.GetRect();
 	Rect clip = GetScreenRect();
@@ -617,21 +634,44 @@ void Graphics::DrawSprite( int x,int y,const Surface& s,Color overlay,Color chro
 	{
 		srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
 	}
-	for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
+	if( !reversed )
 	{
-		for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
+		for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
 		{
-			// Blend pixel with overlay color.  ;)
-			const Color srcPixel = s.GetPixel( sx,sy );
-			if( srcPixel != chroma )
+			for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
 			{
-				const Color blendedPixel =
+				// Blend pixel with overlay color.  ;)
+				const Color srcPixel = s.GetPixel( sx,sy );
+				if( srcPixel != chroma )
 				{
-					unsigned char( ( srcPixel.GetR() + overlay.GetR() ) / 2 ),
-					unsigned char( ( srcPixel.GetG() + overlay.GetG() ) / 2 ),
-					unsigned char( ( srcPixel.GetB() + overlay.GetB() ) / 2 )
-				};
-				PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),blendedPixel );
+					const Color blendedPixel =
+					{
+						unsigned char( ( srcPixel.GetR() + overlay.GetR() ) / 2 ),
+						unsigned char( ( srcPixel.GetG() + overlay.GetG() ) / 2 ),
+						unsigned char( ( srcPixel.GetB() + overlay.GetB() ) / 2 )
+					};
+					PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),blendedPixel );
+				}
+			}
+		}
+	}
+	else
+	{
+		for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
+		{
+			for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
+			{
+				const Color srcPixel = s.GetPixel( int( srcRect.right ) - ( sx + 1 ),sy );
+				if( srcPixel != chroma )
+				{
+					const Color blendedPixel =
+					{
+						unsigned char( ( srcPixel.GetR() + overlay.GetR() ) / 2 ),
+						unsigned char( ( srcPixel.GetG() + overlay.GetG() ) / 2 ),
+						unsigned char( ( srcPixel.GetB() + overlay.GetB() ) / 2 )
+					};
+					PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),blendedPixel );
+				}
 			}
 		}
 	}

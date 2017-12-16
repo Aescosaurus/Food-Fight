@@ -89,7 +89,7 @@ void Game::UpdateModel()
 	for( size_t i = 0; i < hotDogs.size(); ++i )
 	{
 		HotDog& hd = hotDogs[i];
-		hd.Update( dt,rng );
+		hd.Update( rng,dt );
 
 		hd.Target( p.GetPos() );
 
@@ -128,9 +128,23 @@ void Game::UpdateModel()
 	{
 		Meatball& mb = meatballs[i];
 
-		mb.Update( dt );
+		mb.Update( rng,dt );
 
 		mb.Target( p.GetPos() );
+
+		for( Bullet& b : bullets )
+		{
+			if( mb.GetRect().IsOverlappingWith( b.GetRect() ) )
+			{
+				b.Kill();
+				mb.Hurt( 1 );
+			}
+		}
+
+		if( !mb.IsAlive() )
+		{
+			meatballs.erase( meatballs.begin() + i );
+		}
 	}
 }
 

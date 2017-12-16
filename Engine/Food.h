@@ -6,11 +6,16 @@
 
 class Food
 {
+protected:
+	enum class MoveState
+	{
+		Moving,
+		Waiting,
+		Hurting
+	};
 public:
 	Food();
-	Food( class Random& rng );
 	Food( const Vec2& pos );
-	Food( const Vec2& pos,const Vec2& size );
 
 	void Update( float dt );
 	void Draw( class Graphics& gfx ) const;
@@ -18,30 +23,25 @@ public:
 	const Vec2& GetPos() const;
 	const Rect& GetRect() const;
 protected:
-	const Vec2 size;
+	void RandomizeState( class Random& rng );
+protected:
 	Vec2 pos;
 	Rect hitbox;
+	static constexpr int unhitTime = 3;
 	int hitTimer = 0;
-	static constexpr int unhitTime = 2;
+	MoveState state = MoveState::Waiting;
 private:
 };
 
 class HotDog : public Food
 {
-private:
-	enum class MoveState
-	{
-		Moving,
-		Waiting,
-		Hurt
-	};
 public:
 	HotDog();
 	
 	HotDog( const HotDog& other );
 	HotDog& operator=( const HotDog& other );
 
-	void Update( float dt,class Random& rng );
+	void Update( class Random& rng,float dt );
 	void Draw( class Graphics& gfx ) const;
 
 	void Hurt( int amount );
@@ -53,7 +53,6 @@ private:
 	static constexpr float speed = 30.5f;
 	static const Surface spr;
 	Vec2 target;
-	MoveState state = MoveState::Waiting;
 	static constexpr int maxHP = 10;
 	int hp = maxHP;
 };
@@ -63,13 +62,24 @@ class Meatball : public Food
 public:
 	Meatball( const Vec2& pos );
 
-	void Update( float dt );
+	Meatball( const Meatball& other );
+	Meatball& operator=( const Meatball& other );
+
+	void Update( class Random& rng,float dt );
 	void Draw( class Graphics& gfx ) const;
 
 	void Target( const Vec2& targetPos );
+	void Hurt( int damage );
+
+	bool IsAlive() const;
 private:
-	static constexpr float speed = 75.0f;
+	static const Surface spr;
+	static constexpr float speed = 220.5f;
 	Vec2 target;
+	Vec2 vel;
+	bool canRetarget = true;
 	static constexpr int waitTime = 10;
-	int moveTimer = 0;
+	int moveTimer = waitTime;
+	static constexpr int maxHP = 15;
+	int hp = maxHP;
 };
