@@ -41,7 +41,7 @@ public:
 	HotDog( const HotDog& other );
 	HotDog& operator=( const HotDog& other );
 
-	void Update( float dt,class Random& rng );
+	void Update( class Random& rng,float dt );
 	void Draw( class Graphics& gfx ) const;
 
 	void Hurt( int amount );
@@ -80,6 +80,8 @@ public:
 	void Hurt( int damage );
 
 	bool IsAlive() const;
+private:
+	void RandomizeState( class Random& rng );
 private:
 	static constexpr float speed = 75.0f;
 	Vec2 target;

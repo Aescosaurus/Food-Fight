@@ -81,7 +81,7 @@ HotDog& HotDog::operator=( const HotDog& other )
 	return *this;
 }
 
-void HotDog::Update( float dt,Random& rng )
+void HotDog::Update( Random& rng,float dt )
 {
 	// const int rngNum = rng.NextInt( 0,10 );
 	// if( rngNum > 6 )
@@ -123,13 +123,29 @@ void HotDog::Update( float dt,Random& rng )
 void HotDog::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
+	// if( state != MoveState::Hurt )
+	// {
+	// 	if( target.x < pos.x )
+	// 	{
+	// 		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::Magenta,true );
+	// 	}
+	// 	else
+	// 	{
+	// 		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::Magenta,false );
+	// 	}
+	// }
+	// else
+	// {
+	// 	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta );
+	// }
+
 	if( state != MoveState::Hurt )
 	{
-		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr );
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::Magenta,( target.x < pos.x ) );
 	}
 	else
 	{
-		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta );
+		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta,( target.x < pos.x ) );
 	}
 
 	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
@@ -187,14 +203,12 @@ void Meatball::Update( Random& rng,float dt )
 	if( hitTimer > unhitTime )
 	{
 		hitTimer = 0;
-		if( rng.NextInt( 0,10 ) > 5 )
-		{
-			state = MoveState::Moving;
-		}
-		else
-		{
-			state = MoveState::Waiting;
-		}
+		RandomizeState( rng );
+	}
+
+	if( state != MoveState::Hurt )
+	{
+		RandomizeState( rng );
 	}
 
 	if( state == MoveState::Moving )
@@ -244,4 +258,16 @@ void Meatball::Hurt( int damage )
 bool Meatball::IsAlive() const
 {
 	return hp > 0;
+}
+
+void Meatball::RandomizeState( Random& rng )
+{
+	if( rng.NextInt( 0,10 ) > 5 )
+	{
+		state = MoveState::Moving;
+	}
+	else
+	{
+		state = MoveState::Waiting;
+	}
 }

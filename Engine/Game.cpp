@@ -89,7 +89,7 @@ void Game::UpdateModel()
 	for( size_t i = 0; i < hotDogs.size(); ++i )
 	{
 		HotDog& hd = hotDogs[i];
-		hd.Update( dt,rng );
+		hd.Update( rng,dt );
 
 		hd.Target( p.GetPos() );
 
