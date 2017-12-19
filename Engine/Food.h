@@ -37,6 +37,7 @@ class HotDog : public Food
 {
 public:
 	HotDog();
+	HotDog( const Vec2& startPos );
 	
 	HotDog( const HotDog& other );
 	HotDog& operator=( const HotDog& other );

@@ -61,6 +61,15 @@ HotDog::HotDog()
 	hitbox.MoveTo( pos );
 }
 
+HotDog::HotDog( const Vec2& startPos )
+	:
+	Food( startPos )
+{
+	target = { 0.0f,0.0f };
+	hitbox = spr.GetRect();
+	hitbox.MoveTo( pos );
+}
+
 HotDog::HotDog( const HotDog& other )
 {
 	*this = other;
@@ -198,15 +207,16 @@ void Meatball::Update( Random& rng,float dt )
 
 	const Vec2 lastMoveAmount = vel.GetNormalized() * speed * dt;
 	pos += lastMoveAmount;
+	hitbox.MoveTo( pos );
 
-	if( hitbox.GetExpanded( 5.5f ).IsContainedBy( Graphics::GetScreenRect() ) )
+	if( hitbox.GetExpanded( 1.5f ).IsContainedBy( Graphics::GetScreenRect() ) )
 	{
 		canRetarget = false;
 	}
 	else
 	{
 		canRetarget = true;
-		pos -= lastMoveAmount * 5.5f;
+		pos -= lastMoveAmount * 1.5f;
 		vel = -vel;
 	}
 
