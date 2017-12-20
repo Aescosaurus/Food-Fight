@@ -25,6 +25,11 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tabl
 		for( int x = 0; x < std::stoi( xSize ); ++x )
 		{
 			const char nextChar = in.get();
+			if( nextChar == '\n' )
+			{
+				--x;
+			}
+
 			if( nextChar == 'T' )
 			{
 				tables.emplace_back( Table{ { float( x * ts ),float( y * ts ) } } );
