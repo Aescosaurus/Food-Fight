@@ -27,15 +27,16 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
-	hotDogs.emplace_back( HotDog() );
-	meatballs.emplace_back( Meatball( { 50.0f,50.0f } ) );
-	tables.emplace_back( Table( { 400.0f,400.0f } ) );
+	// hotDogs.emplace_back( HotDog() );
+	// meatballs.emplace_back( Meatball( { 50.0f,50.0f } ) );
+	// tables.emplace_back( Table( { 400.0f,400.0f } ) );
+	lr.ReadLevelIntoArrays( 1,tables,hotDogs,meatballs );
 }
 
 void Game::Go()
 {
 	gfx.BeginFrame();
-	UpdateModel();
+	// UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
 }
