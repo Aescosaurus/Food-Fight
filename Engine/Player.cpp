@@ -90,6 +90,18 @@ void Player::Hurt( int amount )
 	hp -= amount;
 }
 
+void Player::CheckTableCollision( const Table& t )
+{
+	pos.x -= vel.x;
+	hitbox.MoveTo( pos );
+	if( hitbox.IsOverlappingWith( t.GetRect() ) )
+	{
+		pos.x += vel.x;
+		pos.y -= vel.y;
+		hitbox.MoveTo( pos );
+	}
+}
+
 const Vec2& Player::GetPos() const
 {
 	return pos;

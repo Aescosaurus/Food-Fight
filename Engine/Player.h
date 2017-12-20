@@ -4,6 +4,7 @@
 #include "Rect.h"
 #include "Bullet.h"
 #include <vector>
+#include "Table.h"
 
 class Player
 {
@@ -18,6 +19,8 @@ public:
 	bool Fire();
 	void MoveBack();
 	void Hurt( int amount );
+
+	void CheckTableCollision( const Table& t );
 
 	const Vec2& GetPos() const;
 	static const Vec2& GetSize();

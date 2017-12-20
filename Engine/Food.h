@@ -3,6 +3,9 @@
 #include "Vec2.h"
 #include "Rect.h"
 #include "Surface.h"
+#include "Bullet.h"
+#include "Table.h"
+#include "Player.h"
 
 class Food
 {
@@ -49,6 +52,10 @@ public:
 	void Target( const Vec2& targetPos );
 	void BounceOffOf( const Vec2& pos );
 
+	void CheckBulletCollision( Bullet& b );
+	void CheckTableCollision( Table& t );
+	void CheckPlayerCollision( Player& p );
+
 	operator bool() const;
 private:
 	static constexpr float speed = 30.5f;
@@ -71,6 +78,8 @@ public:
 
 	void Target( const Vec2& targetPos );
 	void Hurt( int damage );
+
+	void CheckBulletCollision( Bullet& b );
 
 	bool IsAlive() const;
 private:

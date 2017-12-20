@@ -167,6 +167,34 @@ void HotDog::BounceOffOf( const Vec2& pos_in )
 	pos -= moveAwayDir * speed;
 }
 
+void HotDog::CheckBulletCollision( Bullet& b )
+{
+	if( hitbox.IsOverlappingWith( b.GetRect() ) )
+	{
+		Hurt( 1 );
+		b.Kill();
+	}
+}
+
+void HotDog::CheckTableCollision( Table& t )
+{
+	if( hitbox.IsOverlappingWith( t.GetRect() ) )
+	{
+		t.Hurt( 1.0f );
+		BounceOffOf( t.GetPos() );
+	}
+}
+
+void HotDog::CheckPlayerCollision( Player& p )
+{
+	if( hitbox.IsOverlappingWith( p.GetRect() ) )
+	{
+		p.Hurt( 1 );
+		Hurt( 1 );
+		BounceOffOf( p.GetPos() );
+	}
+}
+
 HotDog::operator bool() const
 {
 	return hp > 0;
@@ -254,6 +282,15 @@ void Meatball::Hurt( int damage )
 {
 	hp -= damage;
 	state = MoveState::Hurting;
+}
+
+void Meatball::CheckBulletCollision( Bullet& b )
+{
+	if( hitbox.IsOverlappingWith( b.GetRect() ) )
+	{
+		Hurt( 1 );
+		b.Kill();
+	}
 }
 
 bool Meatball::IsAlive() const
