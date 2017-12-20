@@ -27,6 +27,7 @@ Player::Player( const Vec2& pos_in )
 	Player()
 {
 	pos = pos_in - size;
+	hitbox.MoveTo( pos );
 }
 
 void Player::Update( const Keyboard& kbd,const Mouse& ms,float dt )

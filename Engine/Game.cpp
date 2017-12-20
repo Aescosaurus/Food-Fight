@@ -36,7 +36,7 @@ Game::Game( MainWindow& wnd )
 void Game::Go()
 {
 	gfx.BeginFrame();
-	// UpdateModel();
+	UpdateModel();
 	ComposeFrame();
 	gfx.EndFrame();
 }

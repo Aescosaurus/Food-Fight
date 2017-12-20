@@ -179,6 +179,7 @@ Meatball::Meatball( const Vec2& pos )
 	vel( speed,speed )
 {
 	hitbox = spr.GetRect();
+	hitbox.MoveTo( pos );
 }
 
 Meatball::Meatball( const Meatball& other )
