@@ -1,9 +1,5 @@
 #include "Player.h"
-#include "Keyboard.h"
-#include "Graphics.h"
 #include <cassert>
-#include "Random.h"
-#include "Mouse.h"
 
 const Vec2 Player::size = { 50.0f,50.0f };
 
@@ -92,8 +88,11 @@ void Player::Hurt( int amount )
 
 void Player::CheckTableCollision( const Table& t )
 {
-	pos.x -= vel.x;
-	hitbox.MoveTo( pos );
+	if( hitbox.IsOverlappingWith( t.GetRect() ) )
+	{
+		pos.x -= vel.x;
+		hitbox.MoveTo( pos );
+	}
 	if( hitbox.IsOverlappingWith( t.GetRect() ) )
 	{
 		pos.x += vel.x;

@@ -6,6 +6,8 @@
 #include "Bullet.h"
 #include "Table.h"
 #include "Player.h"
+#include "Graphics.h"
+#include "Random.h"
 
 class Food
 {
@@ -21,12 +23,12 @@ public:
 	Food( const Vec2& pos );
 
 	void Update( float dt );
-	void Draw( class Graphics& gfx ) const;
+	void Draw( Graphics& gfx ) const;
 
 	const Vec2& GetPos() const;
 	const Rect& GetRect() const;
 protected:
-	void RandomizeState( class Random& rng );
+	void RandomizeState( Random& rng );
 protected:
 	Vec2 pos;
 	Rect hitbox;
@@ -45,8 +47,8 @@ public:
 	HotDog( const HotDog& other );
 	HotDog& operator=( const HotDog& other );
 
-	void Update( class Random& rng,float dt );
-	void Draw( class Graphics& gfx ) const;
+	void Update( Random& rng,float dt );
+	void Draw( Graphics& gfx ) const;
 
 	void Hurt( int amount );
 	void Target( const Vec2& targetPos );
@@ -73,15 +75,15 @@ public:
 	Meatball( const Meatball& other );
 	Meatball& operator=( const Meatball& other );
 
-	void Update( class Random& rng,float dt );
-	void Draw( class Graphics& gfx ) const;
+	void Update( Random& rng,float dt );
+	void Draw( Graphics& gfx ) const;
 
 	void Target( const Vec2& targetPos );
 	void Hurt( int damage );
 
 	void CheckBulletCollision( Bullet& b );
 
-	bool IsAlive() const;
+	operator bool() const;
 private:
 	static const Surface spr;
 	static constexpr float speed = 220.5f;

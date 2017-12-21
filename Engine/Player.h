@@ -5,16 +5,20 @@
 #include "Bullet.h"
 #include <vector>
 #include "Table.h"
+#include "Random.h"
+#include "Graphics.h"
+#include "Mouse.h"
+#include "Keyboard.h"
 
 class Player
 {
 public:
 	Player();
-	Player( class Random& rng );
+	Player( Random& rng );
 	Player( const Vec2& pos );
 
-	void Update( const class Keyboard& kbd,const class Mouse& ms,float dt );
-	void Draw( class Graphics& gfx ) const;
+	void Update( const Keyboard& kbd,const Mouse& ms,float dt );
+	void Draw( Graphics& gfx ) const;
 
 	bool Fire();
 	void MoveBack();

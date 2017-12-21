@@ -293,7 +293,7 @@ void Meatball::CheckBulletCollision( Bullet& b )
 	}
 }
 
-bool Meatball::IsAlive() const
+Meatball::operator bool() const
 {
-	return hp > 0;
+	return( hp > 0 );
 }

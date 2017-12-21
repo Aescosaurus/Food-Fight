@@ -10,7 +10,7 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tabl
 {
 	std::ifstream in( "Levels/Level" + std::to_string( nLevel ) + ".lvl" );
 	assert( in.good() );
-	
+
 	// Line 1 of file is x width, line 2 is y height, line 3 is tile size,
 	//  rest are actual level.
 	std::string xSize;
@@ -27,6 +27,7 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tabl
 			const char nextChar = in.get();
 			if( nextChar == '\n' )
 			{
+				assert( x + 1 == std::stoi( xSize ) );
 				--x;
 			}
 

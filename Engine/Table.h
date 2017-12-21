@@ -4,6 +4,8 @@
 #include "Surface.h"
 #include "Rect.h"
 #include "Bullet.h"
+#include "Random.h"
+#include "Graphics.h"
 
 class Table
 {
@@ -16,8 +18,8 @@ private:
 public:
 	Table( const Vec2& pos );
 
-	void Update( class Random& rng,float dt );
-	void Draw( class Graphics& gfx ) const;
+	void Update( Random& rng,float dt );
+	void Draw( Graphics& gfx ) const;
 
 	void Hurt( float damage );
 

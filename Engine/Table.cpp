@@ -1,6 +1,4 @@
 #include "Table.h"
-#include "Graphics.h"
-#include "Random.h"
 
 const Surface Table::sprites[4] =
 {
