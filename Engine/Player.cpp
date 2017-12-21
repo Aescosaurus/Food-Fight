@@ -27,6 +27,7 @@ Player::Player( const Vec2& pos_in )
 	Player()
 {
 	pos = pos_in - size;
+	hitbox.MoveTo( pos );
 }
 
 void Player::Update( const Keyboard& kbd,const Mouse& ms,float dt )
@@ -87,6 +88,18 @@ void Player::MoveBack()
 void Player::Hurt( int amount )
 {
 	hp -= amount;
+}
+
+void Player::CheckTableCollision( const Table& t )
+{
+	pos.x -= vel.x;
+	hitbox.MoveTo( pos );
+	if( hitbox.IsOverlappingWith( t.GetRect() ) )
+	{
+		pos.x += vel.x;
+		pos.y -= vel.y;
+		hitbox.MoveTo( pos );
+	}
 }
 
 const Vec2& Player::GetPos() const

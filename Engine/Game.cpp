@@ -27,9 +27,10 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
-	hotDogs.emplace_back( HotDog() );
-	meatballs.emplace_back( Meatball( { 50.0f,50.0f } ) );
-	tables.emplace_back( Table( { 400.0f,400.0f } ) );
+	// hotDogs.emplace_back( HotDog() );
+	// meatballs.emplace_back( Meatball( { 50.0f,50.0f } ) );
+	// tables.emplace_back( Table( { 400.0f,400.0f } ) );
+	lr.ReadLevelIntoArrays( 1,tables,hotDogs,meatballs );
 }
 
 void Game::Go()
@@ -62,7 +63,8 @@ void Game::UpdateModel()
 		t.Update( rng,dt );
 		if( t && t.GetRect().IsOverlappingWith( p.GetRect() ) )
 		{
-			p.MoveBack();
+			// p.MoveBack();
+			p.CheckTableCollision( t );
 		}
 	}
 
@@ -73,11 +75,12 @@ void Game::UpdateModel()
 
 		for( Table& t : tables )
 		{
-			if( t && t.GetRect().IsOverlappingWith( b.GetRect() ) )
-			{
-				t.Hurt( 0.3f );
-				b.Kill();
-			}
+			// if( t && t.GetRect().IsOverlappingWith( b.GetRect() ) )
+			// {
+			// 	t.Hurt( 0.3f );
+			// 	b.Kill();
+			// }
+			t.CheckBulletCollision( b );
 		}
 
 		if( !b )
@@ -89,33 +92,39 @@ void Game::UpdateModel()
 	for( size_t i = 0; i < hotDogs.size(); ++i )
 	{
 		HotDog& hd = hotDogs[i];
-		hd.Update( rng,dt );
 
+		hd.Update( rng,dt );
 		hd.Target( p.GetPos() );
 
 		for( Bullet& b : bullets )
 		{
-			if( hd.GetRect().IsOverlappingWith( b.GetRect() ) )
-			{
-				b.Kill();
-				hd.Hurt( 1 );
-			}
+			// if( hd.GetRect().IsOverlappingWith( b.GetRect() ) )
+			// {
+			// 	b.Kill();
+			// 	hd.Hurt( 1 );
+			// }
+			hd.CheckBulletCollision( b );
 		}
 
 		for( Table& t : tables )
 		{
-			if( t && t.GetRect().IsOverlappingWith( hd.GetRect() ) )
-			{
-				t.Hurt( 1.0f );
-				hd.BounceOffOf( t.GetPos() );
-			}
+			// if( t && t.GetRect().IsOverlappingWith( hd.GetRect() ) )
+			// {
+			// 	t.Hurt( 1.0f );
+			// 	hd.BounceOffOf( t.GetPos() );
+			// }
+			hd.CheckTableCollision( t );
 		}
 
-		if( hd && hd.GetRect().IsOverlappingWith( p.GetRect() ) )
+		// if( hd && hd.GetRect().IsOverlappingWith( p.GetRect() ) )
+		// {
+		// 	p.Hurt( 1 );
+		// 	hd.Hurt( 1 );
+		// 	hd.BounceOffOf( p.GetPos() );
+		// }
+		if( hd )
 		{
-			p.Hurt( 1 );
-			hd.Hurt( 1 );
-			hd.BounceOffOf( p.GetPos() );
+			hd.CheckPlayerCollision( p );
 		}
 
 		if( !hd )
@@ -129,16 +138,16 @@ void Game::UpdateModel()
 		Meatball& mb = meatballs[i];
 
 		mb.Update( rng,dt );
-
 		mb.Target( p.GetPos() );
 
 		for( Bullet& b : bullets )
 		{
-			if( mb.GetRect().IsOverlappingWith( b.GetRect() ) )
-			{
-				b.Kill();
-				mb.Hurt( 1 );
-			}
+			// if( mb.GetRect().IsOverlappingWith( b.GetRect() ) )
+			// {
+			// 	b.Kill();
+			// 	mb.Hurt( 1 );
+			// }
+			mb.CheckBulletCollision( b );
 		}
 
 		if( !mb.IsAlive() )

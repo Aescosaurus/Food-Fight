@@ -57,6 +57,15 @@ void Table::Hurt( float damage )
 	s = State::Hurt;
 }
 
+void Table::CheckBulletCollision( Bullet& b )
+{
+	if( hitbox.IsOverlappingWith( b.GetRect() ) )
+	{
+		Hurt( 0.3f );
+		b.Kill();
+	}
+}
+
 const Vec2& Table::GetPos() const
 {
 	return pos;

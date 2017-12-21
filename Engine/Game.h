@@ -30,6 +30,7 @@
 #include "Food.h" // All enemies!
 #include "Table.h"
 #include "Bullet.h"
+#include "LevelReader.h"
 
 class Game
 {
@@ -56,5 +57,6 @@ private:
 	std::vector<Meatball> meatballs;
 	std::vector<Table> tables;
 	std::vector<Bullet> bullets;
+	LevelReader lr;
 	/********************************/
 };

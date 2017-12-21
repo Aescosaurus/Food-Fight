@@ -3,6 +3,7 @@
 #include "Vec2.h"
 #include "Surface.h"
 #include "Rect.h"
+#include "Bullet.h"
 
 class Table
 {
@@ -19,6 +20,8 @@ public:
 	void Draw( class Graphics& gfx ) const;
 
 	void Hurt( float damage );
+
+	void CheckBulletCollision( Bullet& b );
 
 	const Vec2& GetPos() const;
 	const Rect& GetRect() const;

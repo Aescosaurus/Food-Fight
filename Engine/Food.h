@@ -3,6 +3,9 @@
 #include "Vec2.h"
 #include "Rect.h"
 #include "Surface.h"
+#include "Bullet.h"
+#include "Table.h"
+#include "Player.h"
 
 class Food
 {
@@ -37,6 +40,7 @@ class HotDog : public Food
 {
 public:
 	HotDog();
+	HotDog( const Vec2& startPos );
 	
 	HotDog( const HotDog& other );
 	HotDog& operator=( const HotDog& other );
@@ -47,6 +51,10 @@ public:
 	void Hurt( int amount );
 	void Target( const Vec2& targetPos );
 	void BounceOffOf( const Vec2& pos );
+
+	void CheckBulletCollision( Bullet& b );
+	void CheckTableCollision( Table& t );
+	void CheckPlayerCollision( Player& p );
 
 	operator bool() const;
 private:
@@ -70,6 +78,8 @@ public:
 
 	void Target( const Vec2& targetPos );
 	void Hurt( int damage );
+
+	void CheckBulletCollision( Bullet& b );
 
 	bool IsAlive() const;
 private:

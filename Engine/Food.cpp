@@ -61,6 +61,15 @@ HotDog::HotDog()
 	hitbox.MoveTo( pos );
 }
 
+HotDog::HotDog( const Vec2& startPos )
+	:
+	Food( startPos )
+{
+	target = { 0.0f,0.0f };
+	hitbox = spr.GetRect();
+	hitbox.MoveTo( pos );
+}
+
 HotDog::HotDog( const HotDog& other )
 {
 	*this = other;
@@ -158,6 +167,34 @@ void HotDog::BounceOffOf( const Vec2& pos_in )
 	pos -= moveAwayDir * speed;
 }
 
+void HotDog::CheckBulletCollision( Bullet& b )
+{
+	if( hitbox.IsOverlappingWith( b.GetRect() ) )
+	{
+		Hurt( 1 );
+		b.Kill();
+	}
+}
+
+void HotDog::CheckTableCollision( Table& t )
+{
+	if( hitbox.IsOverlappingWith( t.GetRect() ) )
+	{
+		t.Hurt( 1.0f );
+		BounceOffOf( t.GetPos() );
+	}
+}
+
+void HotDog::CheckPlayerCollision( Player& p )
+{
+	if( hitbox.IsOverlappingWith( p.GetRect() ) )
+	{
+		p.Hurt( 1 );
+		Hurt( 1 );
+		BounceOffOf( p.GetPos() );
+	}
+}
+
 HotDog::operator bool() const
 {
 	return hp > 0;
@@ -170,6 +207,7 @@ Meatball::Meatball( const Vec2& pos )
 	vel( speed,speed )
 {
 	hitbox = spr.GetRect();
+	hitbox.MoveTo( pos );
 }
 
 Meatball::Meatball( const Meatball& other )
@@ -198,15 +236,16 @@ void Meatball::Update( Random& rng,float dt )
 
 	const Vec2 lastMoveAmount = vel.GetNormalized() * speed * dt;
 	pos += lastMoveAmount;
+	hitbox.MoveTo( pos );
 
-	if( hitbox.GetExpanded( 5.5f ).IsContainedBy( Graphics::GetScreenRect() ) )
+	if( hitbox.GetExpanded( 1.5f ).IsContainedBy( Graphics::GetScreenRect() ) )
 	{
 		canRetarget = false;
 	}
 	else
 	{
 		canRetarget = true;
-		pos -= lastMoveAmount * 5.5f;
+		pos -= lastMoveAmount * 1.5f;
 		vel = -vel;
 	}
 
@@ -243,6 +282,15 @@ void Meatball::Hurt( int damage )
 {
 	hp -= damage;
 	state = MoveState::Hurting;
+}
+
+void Meatball::CheckBulletCollision( Bullet& b )
+{
+	if( hitbox.IsOverlappingWith( b.GetRect() ) )
+	{
+		Hurt( 1 );
+		b.Kill();
+	}
 }
 
 bool Meatball::IsAlive() const
