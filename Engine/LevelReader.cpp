@@ -34,8 +34,7 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tabl
 			{
 				--x;
 			}
-
-			if( nextChar == 'T' )
+			else if( nextChar == 'T' )
 			{
 				tables.emplace_back( Table{ { float( x * ts ),float( y * ts ) } } );
 			}

@@ -128,6 +128,7 @@ void Game::UpdateModel()
 		}
 	}
 
+	// Deal with level transitions.
 	for( const Door& d : doors )
 	{
 		if( p.GetRect().IsOverlappingWith( d.GetRect() ) )
