@@ -25,6 +25,7 @@ public:
 	void Hurt( int amount );
 
 	void CheckTableCollision( const Table& t );
+	void Goto( const Vec2& targetPos );
 
 	const Vec2& GetPos() const;
 	static const Vec2& GetSize();

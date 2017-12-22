@@ -28,6 +28,7 @@ Game::Game( MainWindow& wnd )
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
 	lr.ReadLevelIntoArrays( level,
+		p,
 		tables,
 		hotDogs,
 		meatballs,
@@ -142,6 +143,7 @@ void Game::UpdateModel()
 			doors.clear();
 
 			lr.ReadLevelIntoArrays( level,
+				p,
 				tables,
 				hotDogs,
 				meatballs,

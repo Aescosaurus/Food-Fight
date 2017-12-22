@@ -87,20 +87,6 @@ HotDog& HotDog::operator=( const HotDog& other )
 
 void HotDog::Update( Random& rng,float dt )
 {
-	// const int rngNum = rng.NextInt( 0,10 );
-	// if( rngNum > 6 )
-	// {
-	// 	state = MoveState::Waiting;
-	// }
-	// else if( rngNum > 4 )
-	// {
-	// 	state = MoveState::Moving;
-	// }
-	// else
-	// {
-	// 	// State is still being hurt.
-	// }
-
 	++hitTimer;
 	if( hitTimer > unhitTime )
 	{
@@ -120,21 +106,6 @@ void HotDog::Update( Random& rng,float dt )
 void HotDog::Draw( Graphics& gfx ) const
 {
 	assert( hitbox.IsContainedBy( Graphics::GetScreenRect() ) );
-	// if( state != MoveState::Hurt )
-	// {
-	// 	if( target.x < pos.x )
-	// 	{
-	// 		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::Magenta,true );
-	// 	}
-	// 	else
-	// 	{
-	// 		gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::Magenta,false );
-	// 	}
-	// }
-	// else
-	// {
-	// 	gfx.DrawSprite( int( pos.x ),int( pos.y ),spr,Colors::White,Colors::Magenta );
-	// }
 
 	if( state != MoveState::Hurting )
 	{

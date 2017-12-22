@@ -4,7 +4,9 @@
 #include <string>
 #include <cassert>
 
-void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tables,
+void LevelReader::ReadLevelIntoArrays( const int nLevel,
+	Player& p,
+	std::vector<Table>& tables,
 	std::vector<HotDog>& hotDogs,
 	std::vector<Meatball>& meatballs,
 	std::vector<Door>& doors )
@@ -50,6 +52,12 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tabl
 			{
 				doors.emplace_back( Door{ { float( x * ts ),float( y * ts ) } } );
 			}
+			else if( nextChar == 'P' )
+			{
+				p.Goto( { float( x * ts ),float( x * ts ) } );
+			}
 		}
 	}
+
+	in.close();
 }

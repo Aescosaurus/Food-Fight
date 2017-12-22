@@ -101,6 +101,11 @@ void Player::CheckTableCollision( const Table& t )
 	}
 }
 
+void Player::Goto( const Vec2& targetPos )
+{
+	pos = targetPos;
+}
+
 const Vec2& Player::GetPos() const
 {
 	return pos;
