@@ -27,7 +27,11 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
 	p( { Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 } )
 {
-	lr.ReadLevelIntoArrays( 1,tables,hotDogs,meatballs );
+	lr.ReadLevelIntoArrays( level,
+		tables,
+		hotDogs,
+		meatballs,
+		doors );
 }
 
 void Game::Go()
@@ -100,8 +104,7 @@ void Game::UpdateModel()
 		{
 			hd.CheckPlayerCollision( p );
 		}
-
-		if( !hd )
+		else
 		{
 			hotDogs.erase( hotDogs.begin() + i );
 		}
@@ -124,11 +127,36 @@ void Game::UpdateModel()
 			meatballs.erase( meatballs.begin() + i );
 		}
 	}
+
+	for( const Door& d : doors )
+	{
+		if( p.GetRect().IsOverlappingWith( d.GetRect() ) )
+		{
+			++level;
+
+			hotDogs.clear();
+			meatballs.clear();
+			tables.clear();
+			bullets.clear();
+			doors.clear();
+
+			lr.ReadLevelIntoArrays( level,
+				tables,
+				hotDogs,
+				meatballs,
+				doors );
+		}
+	}
 }
 
 void Game::ComposeFrame()
 {
 	// gfx.DrawRect( 0,0,Graphics::ScreenWidth,Graphics::ScreenHeight,Colors::Cyan );
+
+	for( const Door& d : doors )
+	{
+		d.Draw( gfx );
+	}
 
 	for( const Table& t : tables )
 	{

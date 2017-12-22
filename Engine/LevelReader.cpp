@@ -6,7 +6,8 @@
 
 void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tables,
 	std::vector<HotDog>& hotDogs,
-	std::vector<Meatball>& meatballs )
+	std::vector<Meatball>& meatballs,
+	std::vector<Door>& doors )
 {
 	std::ifstream in( "Levels/Level" + std::to_string( nLevel ) + ".lvl" );
 	assert( in.good() );
@@ -19,15 +20,18 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tabl
 	std::getline( in,xSize );
 	std::getline( in,ySize );
 	std::getline( in,tileSize );
+
+	const int xs = std::stoi( xSize );
+	const int ys = std::stoi( ySize );
 	const int ts = std::stoi( tileSize );
-	for( int y = 0; y < std::stoi( ySize ); ++y )
+
+	for( int y = 0; y < ys; ++y )
 	{
-		for( int x = 0; x < std::stoi( xSize ); ++x )
+		for( int x = 0; x < xs; ++x )
 		{
 			const char nextChar = in.get();
 			if( nextChar == '\n' )
 			{
-				assert( x + 1 == std::stoi( xSize ) );
 				--x;
 			}
 
@@ -42,6 +46,10 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,std::vector<Table>& tabl
 			else if( nextChar == 'M' )
 			{
 				meatballs.emplace_back( Meatball{ { float( x * ts ),float( y * ts ) } } );
+			}
+			else if( nextChar == 'D' )
+			{
+				doors.emplace_back( Door{ { float( x * ts ),float( y * ts ) } } );
 			}
 		}
 	}

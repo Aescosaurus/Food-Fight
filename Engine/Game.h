@@ -31,6 +31,7 @@
 #include "Table.h"
 #include "Bullet.h"
 #include "LevelReader.h"
+#include "Door.h"
 
 class Game
 {
@@ -57,6 +58,8 @@ private:
 	std::vector<Meatball> meatballs;
 	std::vector<Table> tables;
 	std::vector<Bullet> bullets;
+	std::vector<Door> doors;
 	LevelReader lr;
+	int level = 1;
 	/********************************/
 };
