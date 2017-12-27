@@ -14,7 +14,6 @@ class Player
 {
 public:
 	Player();
-	Player( Random& rng );
 	Player( const Vec2& pos );
 
 	void Update( const Keyboard& kbd,const Mouse& ms,float dt );

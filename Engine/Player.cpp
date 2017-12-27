@@ -10,19 +10,19 @@ Player::Player()
 {
 }
 
-Player::Player( Random& rng )
-	:
-	Player()
-{
-	pos.x = float( rng.NextInt( int( size.x / 2.0f ),Graphics::ScreenWidth - int( size.x / 2.0f ) ) );
-	pos.y = float( rng.NextInt( int( size.y / 2.0f ),Graphics::ScreenHeight - int( size.y / 2.0f ) ) );
-}
-
 Player::Player( const Vec2& pos_in )
 	:
 	Player()
 {
 	pos = pos_in - size;
+	while( pos.x + size.x > Graphics::ScreenWidth )
+	{
+		--pos.x;
+	}
+	while( pos.y + size.y > Graphics::ScreenHeight )
+	{
+		--pos.y;
+	}
 	hitbox.MoveTo( pos );
 }
 

@@ -78,6 +78,8 @@ public:
 	void DrawSprite( int x,int y,Rect srcRect,const Rect& clip,const Surface& s,Color chroma = Colors::Magenta,bool reversed = false );
 	void DrawSprite( int x,int y,const Surface& s,Color overlay,Color chroma = Colors::Magenta,bool reversed = false );
 
+	void DrawSpriteExpanded( int x,int y,const Surface& s,int amount,Color chroma = Colors::Magenta,bool reversed = false );
+
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;

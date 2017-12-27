@@ -677,6 +677,67 @@ void Graphics::DrawSprite( int x,int y,const Surface& s,Color overlay,Color chro
 	}
 }
 
+void Graphics::DrawSpriteExpanded( int x,int y,const Surface& s,int amount,Color chroma,bool reversed )
+{
+	Rect srcRect = s.GetRect();
+	Rect clip = GetScreenRect();
+	assert( srcRect.left >= 0 );
+	assert( srcRect.right <= s.GetWidth() );
+	assert( srcRect.top >= 0 );
+	assert( srcRect.bottom <= s.GetHeight() );
+	if( x < clip.left )
+	{
+		srcRect.left += clip.left - x;
+		x = int( clip.left );
+	}
+	if( y < clip.top )
+	{
+		srcRect.top += clip.top - y;
+		y = int( clip.top );
+	}
+	if( x + srcRect.GetWidth() > clip.right )
+	{
+		srcRect.right -= x + srcRect.GetWidth() - clip.right;
+	}
+	if( y + srcRect.GetHeight() > clip.bottom )
+	{
+		srcRect.bottom -= y + srcRect.GetHeight() - clip.bottom;
+	}
+	if( !reversed )
+	{
+		for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ) * amount; sy += amount )
+		{
+			for( int sx = int( srcRect.left ); sx < int( srcRect.right ) * amount; sx += amount )
+			{
+				const Color srcPixel = s.GetPixel( sx / amount,sy / amount );
+				if( srcPixel != chroma )
+				{
+					for( int i = 0; i < amount; ++i )
+					{
+						for( int j = 0; j < amount; ++j )
+						{
+							PutPixel( x + int( sx - srcRect.left ) + j,y + int( sy - srcRect.top ) + i,srcPixel );
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		for( int sy = int( srcRect.top ); sy < int( srcRect.bottom ); ++sy )
+		{
+			for( int sx = int( srcRect.left ); sx < int( srcRect.right ); ++sx )
+			{
+				const Color srcPixel = s.GetPixel( int( srcRect.right ) - ( sx + 1 ),sy );
+				if( srcPixel != chroma )
+				{
+					PutPixel( x + int( sx - srcRect.left ),y + int( sy - srcRect.top ),srcPixel );
+				}
+			}
+		}
+	}
+}
 
 //////////////////////////////////////////////////
 //           Graphics Exception

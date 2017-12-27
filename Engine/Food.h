@@ -30,6 +30,7 @@ public:
 protected:
 	void RandomizeState( Random& rng );
 protected:
+	static const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;
 	static constexpr int unhitTime = 3;

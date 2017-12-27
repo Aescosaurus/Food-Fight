@@ -117,6 +117,11 @@ void Surface::PutPixel( int x,int y,Color c )
 	pPixels[y * width + x] = c;
 }
 
+Color Surface::GetPixelExpanded( int x,int y ) const
+{
+	return pPixels[y * width + x];
+}
+
 Color Surface::GetPixel( int x,int y ) const
 {
 	assert( x >= 0 );

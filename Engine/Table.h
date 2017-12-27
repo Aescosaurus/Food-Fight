@@ -13,7 +13,8 @@ private:
 	enum class State
 	{
 		Normal,
-		Hurt
+		Hurt,
+		Broken
 	};
 public:
 	Table( const Vec2& pos );
@@ -31,6 +32,8 @@ public:
 private:
 	static constexpr int nSprites = 4;
 	static const Surface sprites[nSprites];
+	static constexpr int nAngles = 9;
+	static const Surface tableAngles[nAngles];
 	static const Vec2 size;
 	Vec2 pos;
 	Rect hitbox;

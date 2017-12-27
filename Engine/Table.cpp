@@ -7,39 +7,78 @@ const Surface Table::sprites[4] =
 	Surface( "Images/Table3.bmp" ),
 	Surface( "Images/Table4.bmp" )
 };
-const Vec2 Table::size = { float( sprites[0].GetWidth() ),float( sprites[0].GetHeight() ) };
+const Surface Table::tableAngles[nAngles] =
+{
+	Surface{ "Images/Table/Table1.bmp" },
+	Surface{ "Images/Table/Table2.bmp" },
+	Surface{ "Images/Table/Table3.bmp" },
+	Surface{ "Images/Table/Table4.bmp" },
+	Surface{ "Images/Table/Table5.bmp" },
+	Surface{ "Images/Table/Table6.bmp" },
+	Surface{ "Images/Table/Table7.bmp" },
+	Surface{ "Images/Table/Table8.bmp" },
+	Surface{ "Images/Table/Table9.bmp" }
+};
+const Vec2 Table::size = { 50.0f,50.0f };
 
 Table::Table( const Vec2& pos )
 	:
 	pos( pos ),
-	hitbox( sprites[0].GetRect() )
+	hitbox( pos,pos + size )
 {
+	while( pos.x + size.x > Graphics::ScreenWidth )
+	{
+		--this->pos.x;
+	}
+	while( pos.y + size.y > Graphics::ScreenHeight )
+	{
+		--this->pos.y;
+	}
 	hitbox.MoveTo( pos );
 }
 
 void Table::Update( Random& rng,float dt )
 {
-	++hitTimer;
-	// if( rng.NextInt( 0,10 ) > 5 )
-	if( hitTimer > unhitTime )
+	if( s != State::Broken )
 	{
-		hitTimer = 0;
-		s = State::Normal;
+		++hitTimer;
+		// if( rng.NextInt( 0,10 ) > 5 )
+		if( hitTimer > unhitTime )
+		{
+			hitTimer = 0;
+			s = State::Normal;
+		}
 	}
 }
 
 void Table::Draw( Graphics& gfx ) const
 {
-	if( s == State::Hurt )
+	// if( s == State::Hurt )
+	// {
+	// 	gfx.DrawSprite( int( pos.x ),int( pos.y ),sprites[int( sprIndex )],Colors::White,Colors::Magenta );
+	// }
+	// else
+	// {
+	// 	gfx.DrawSprite( int( pos.x ),int( pos.y ),sprites[int( sprIndex )] );
+	// }
+
+	// if( int( sprIndex ) < nSprites - 1 )
+	// {
+	// 	gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
+	// }
+
+	gfx.DrawSpriteExpanded( int( pos.x ),int( pos.y ),tableAngles[0],6,Colors::Magenta,false );
+
+	if( s == State::Normal )
 	{
-		gfx.DrawSprite( int( pos.x ),int( pos.y ),sprites[int( sprIndex )],Colors::White,Colors::Magenta );
+		
 	}
-	else
+	else if( s == State::Hurt )
 	{
-		gfx.DrawSprite( int( pos.x ),int( pos.y ),sprites[int( sprIndex )] );
+		// Draw with that funny white overlay to signal damage has been taken.
 	}
 
-	if( int( sprIndex ) < nSprites - 1 )
+	if( s != State::Broken )
 	{
 		gfx.DrawHitbox( hitbox,{ 255,160,0 },true );
 	}
@@ -51,8 +90,12 @@ void Table::Hurt( float damage )
 	if( int( sprIndex ) > nSprites - 1 )
 	{
 		hitbox.MoveTo( { float( Graphics::ScreenWidth ),float( Graphics::ScreenHeight ) } );
+		s = State::Broken;
 	}
-	s = State::Hurt;
+	else
+	{
+		s = State::Hurt;
+	}
 }
 
 void Table::CheckBulletCollision( Bullet& b )

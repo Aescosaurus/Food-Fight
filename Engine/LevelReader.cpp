@@ -33,7 +33,7 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,
 		{
 			const char nextChar = in.get();
 			if( nextChar == '\n' )
-			{
+			{ // Corrects for my mistake of not using std::ios::binary.
 				--x;
 			}
 			else if( nextChar == 'T' )
@@ -54,7 +54,7 @@ void LevelReader::ReadLevelIntoArrays( const int nLevel,
 			}
 			else if( nextChar == 'P' )
 			{
-				p.Goto( { float( x * ts ),float( x * ts ) } );
+				p.Goto( { float( x * ts ),float( y * ts ) } );
 			}
 		}
 	}

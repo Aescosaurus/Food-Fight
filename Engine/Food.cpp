@@ -1,9 +1,7 @@
 #include "Food.h"
-#include "Random.h"
-#include "Graphics.h"
 #include <cassert>
-#include "Table.h"
 
+const Vec2 Food::size = { 50.0f,50.0f };
 const Surface HotDog::spr = Surface( "Images/HotDog.bmp" );
 const Surface Meatball::spr = Surface{ "Images/Meatball.bmp" };
 
@@ -18,6 +16,14 @@ Food::Food( const Vec2& pos )
 	Food()
 {
 	this->pos = pos;
+	while( pos.x + size.x > Graphics::ScreenWidth )
+	{
+		--this->pos.x;
+	}
+	while( pos.y + size.y > Graphics::ScreenHeight )
+	{
+		--this->pos.y;
+	}
 }
 
 void Food::Update( float dt )
